@@ -5,12 +5,9 @@ export const getUser = (req, res) => {
   const token = req.cookies.accessToken;
   if(!token) return res.status(401).json("Not logged in!");
 
-  jwt.verify(token, 'secretKey', (err, userInfo) => {
+  jwt.verify(token, 'secretKey', (err) => {
     // forbidden error
     if(err) return res.status(403).json("Token is not valid!");
-
-    const userId = userInfo.id;
-
 
     const q = `SELECT * FROM users WHERE id = ?`;
 

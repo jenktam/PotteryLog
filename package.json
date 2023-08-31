@@ -1,0 +1,17 @@
+{
+  "name": "pottery-log",
+  "version": "1.0.0",
+  "description": "## Description A project management tool to assist potters with tracking their works at different stages. This application is for hand-built and wheel-thrown users.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint --cache --report-unused-disable-directives ."
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "eslint": "^8.48.0",
+    "eslint-config-prettier": "^9.0.0",
+    "prettier": "^3.0.3"
+  }
+}

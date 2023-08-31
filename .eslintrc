@@ -1,0 +1,44 @@
+/**
+ * ESLint configuration.
+ *
+ * @see https://eslint.org/docs/user-guide/configuring
+ * @type {import("eslint").Linter.Config}
+ */
+{
+  "root": true,
+
+  "env": {
+    "es6": true,
+    "node": true
+  },
+
+  "extends": ["eslint:recommended", "prettier"],
+
+  "parserOptions": {
+    "ecmaVersion": 2020
+  },
+  "overrides": [
+    {
+      "files": ["*.js", ".jsx"],
+      "parserOptions": {
+        "sourceType": "module",
+      }
+    },
+    {
+      "files": ["*.test.js"],
+      "env": {
+        "jest": true,
+      }
+    }
+  ],
+  "rules": {
+    "comma-dangle": "off"
+  },
+  "ignorePatterns": [
+    "/.build",
+    "/.cache",
+    "/.git",
+    "/**/node_modules",
+    "/coverage"
+  ]
+}

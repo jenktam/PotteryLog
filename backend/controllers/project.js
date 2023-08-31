@@ -2,7 +2,6 @@ import jwt from 'jsonwebtoken';
 import { db } from '../connect.js';
 
 export const getProjects = (req, res) => {
-  const userId = req.query.userId;
   const token = req.cookies.accessToken;
 
   if(!token) {
@@ -32,7 +31,6 @@ export const getProjects = (req, res) => {
 
 // GET /api/projects/:id
 export const getProject = (req, res) => {
-  const userId = req.query.userId;
   const token = req.cookies.accessToken;
 
   if(!token) {
@@ -44,10 +42,10 @@ export const getProject = (req, res) => {
 
     const q = `SELECT *
                 FROM projects
-                WHERE id = ?
+                WHERE id = ? and userId = ?
               `;
 
-    db.query(q, [req.params.id], (err, data) => {
+    db.query(q, [req.params.id, userInfo.id], (err, data) => {
       if(err) return res.status(500).json(err);
 
       if(!data.length) return res.status(404).json('Project not found');

@@ -28,7 +28,7 @@ export const register = (req, res) => {
 
   const values = [username, email, hashedPassword, firstName, lastName];
 
-  db.query(query, [values], (err, data) => {
+  db.query(query, [values], (err) => {
     if(err) return res.status(500).json(err);
     return res.status(200).json('User has been created');
   });
@@ -39,14 +39,12 @@ export const insertResetToken = (email,tokenValue, createdAt, expiredAt, used, u
 
   return new Promise((resolve, reject) => {
     const q = "INSERT INTO resetPasswordToken (`email`, `tokenValue` ,`createdAt`, `expiredAt`, `used`, `insertedAt`, `userId`) VALUE (?)";
-  
 
     const values = [email, tokenValue ,createdAt, expiredAt, used, insertedAt, userId]
     db.query(q, [values], (err, data) => {
       if(err) return reject(err);
 
       return resolve(data.insertId);
-      
     })
   })
 
@@ -85,36 +83,9 @@ async function sendPasswordResetEmail(email, resetToken, origin) {
       to: email,
       subject: ' Reset your Password',
       html: `<h4>Reset Password</h4>
-             ${message}`
+            ${message}`
   });
 }
-
-// old code doesn't have validation. User can change password if know username
-// TODO: add temp code for authorization to change password
-// export const resetPassword = (req, res) => {
-//   const q = "SELECT * FROM users WHERE username=?";
-
-//   db.query(q, [req.body.username], (err, data) => {
-//     if(err) return res.status(500).json(err);
-//     if (data.length === 0) return res.status(409).json("User not found!")
-
-//     const salt = bcrypt.genSaltSync(10);
-//     const hashedPassword = bcrypt.hashSync(req.body.password, salt);
-
-//     const query = "UPDATE users SET `password` = ? WHERE `username` = ?";
-
-//     const values = [
-//       hashedPassword,
-//       req.body.username,
-//     ];
-
-//     db.query(query, values, (err, data) => {
-//       if(err) return res.status(500).json(err);
-//       return res.status(200).json('Password has been updated.');
-//     })
-//   })
-// }
-
 
 const getUserByEmail = (email) => {
   return new Promise((resolve, reject)=>{
@@ -141,7 +112,7 @@ export const expireOldTokens = (email, used) =>{
   });
 }
 
-export const resetPassword = async(req, res, next) => {
+export const resetPassword = async(req, res) => {
   try {
     const newPassword = req.body.password;
     const email = req.body.email;
@@ -163,7 +134,7 @@ export const resetPassword = async(req, res, next) => {
 
     const values = [hashedPassword, user.id]; 
     
-    db.query(q, [...values], (err, data) => {
+    db.query(q, [...values], (err) => {
       if(err) return res.status(500).json(err);
 
       return res.status(200).json("Password reset successful. You can now login with your new password.");
@@ -173,7 +144,7 @@ export const resetPassword = async(req, res, next) => {
   }
 };
 
-export const forgotPassword = async(req, res, next) => {
+export const forgotPassword = async(req, res) => {
   try{
     const email = req.body.email;
     console.log(email);

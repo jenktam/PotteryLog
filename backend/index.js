@@ -1,13 +1,11 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import nodemailer from 'nodemailer';
 import userRoutes from './routes/users.js';
 import authRoutes from './routes/auth.js';
 import postRoutes from './routes/posts.js';
 import projectRoutes from './routes/projects.js';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import crypto from 'crypto';
 
 const app = express();
 dotenv.config();
