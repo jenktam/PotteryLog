@@ -15,8 +15,9 @@ jspm_packages/
 # Distribution directories
 dist/
 
-# Env variables
-.env
+# Secrets
+/env/.env.override
+/env/.env.*.override
 
 # Typescript v1 declaration files
 typings/
@@ -24,7 +25,8 @@ typings/
 # Optional npm cache directory
 .npm
 
-# Optional eslint cache
+# Cache
+/.cache
 .eslintcache
 
 # Optional REPL history
