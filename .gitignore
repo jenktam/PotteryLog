@@ -16,8 +16,7 @@ jspm_packages/
 dist/
 
 # Secrets
-/env/.env.override
-/env/.env.*.override
+.env
 
 # Typescript v1 declaration files
 typings/
@@ -37,3 +36,6 @@ typings/
 
 # Yarn Integrity file
 .yarn-integrity
+
+# macOS
+.DS_Store
