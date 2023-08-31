@@ -1,6 +1,6 @@
 # Backend
 
-# Getting Starts
+# Getting Started
 Run `npm run start`
 
 # File Architecture
