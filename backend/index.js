@@ -6,6 +6,7 @@ import postRoutes from './routes/posts.js';
 import projectRoutes from './routes/projects.js';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import multer from 'multer';
 
 const app = express();
 dotenv.config();
@@ -25,6 +26,29 @@ app.use(cors({
   origin: `http://localhost:${process.env.PORT}`,
 }));
 app.use(cookieParser());
+
+
+// can create router for multer file upload stuff
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, `../client/public/upload`) // upload file destination. must add
+  },
+  filename: (req, file, cb) => {
+    // be careful with file keys. they're not camelCase
+    const fieldName = Date.now() + file.originalname;
+
+    cb(null, fieldName)
+  }
+})
+
+const upload = multer({ storage: storage });
+
+// TODO: change to multiple
+app.post("/api/upload", upload.single("file"), (req, res) => {
+  const file = req.file;
+  res.status(200).json(file.filename);
+})
+
 // *******************
 
 // ********** Routes *********

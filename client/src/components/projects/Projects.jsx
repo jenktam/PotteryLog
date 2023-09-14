@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import React from 'react';
 import { styled } from '@mui/material/styles';
 import { Grid } from '@mui/material';
 import Paper from '@mui/material/Paper';
-
+import { useQuery } from '@tanstack/react-query';
 import { makeRequest } from '../../axios';
-import Project from '../project/Project';
+import ProjectCard from '../projectCard/ProjectCard';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -29,8 +28,6 @@ const Projects = () => {
     )
   }
 
-  // TODO: separate by status and create swim lanes
-  // if swim lane empty, say 'You have nothing at this stage'
   return (
     <>
         <Grid 
@@ -42,9 +39,9 @@ const Projects = () => {
       >
         {data && data.map((project) => {
           return (
-            <Grid item xs={6} md={3}>
+            <Grid item xs={6} md={3} key={project.id}>
               <Item>
-                <Project project={project} key={project.id} />
+                <ProjectCard project={project} key={project.id} />
               </Item>
             </Grid>
           )

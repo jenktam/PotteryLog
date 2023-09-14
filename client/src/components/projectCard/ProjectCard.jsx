@@ -1,18 +1,11 @@
-import React, { useState } from 'react';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import { Grid } from '@mui/material';
+import React from 'react';
+import {Card, CardActions, CardContent, CardMedia,
+Typography } from '@mui/material';
+// import NoImage from "../../assets/defaultProjectImage.png";
+import NoImage from "../../assets/defaultProjectImage.jpeg";
+import { Link } from 'react-router-dom';
 
-const Project = ({ project }) => {
-  const handleClick = (e) => {
-    e.preventDefault();
-
-    // TODO: go to /projects/:id page
-    console.log("go to /projects/:id page!");
-  }
+const ProjectCard = ({ project }) => {
   return (
     <>
       <Card>
@@ -23,6 +16,12 @@ const Project = ({ project }) => {
           <Typography variant="h5" component="div">
             {project.name}
           </Typography>
+          <CardMedia
+            component="img"
+            height="194"
+            image={project.img ? `/upload/${project.img}` : NoImage}
+            alt="Project Image"
+          />
           <Typography sx={{ mb: 1.5 }} color="text.secondary">
             {project.status}
           </Typography>
@@ -37,11 +36,13 @@ const Project = ({ project }) => {
           </Typography>
         </CardContent>
         <CardActions>
-          <Button size="small" onClick={handleClick}>Learn More</Button>
+          <Link to={`/projects/${project.id}`}>
+            Learn More
+          </Link>
         </CardActions>
       </Card>
     </>
   );
 };
 
-export default Project;
+export default ProjectCard;

@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import moment from 'moment';
 import { db } from '../connect.js';
 
 export const getProjects = (req, res) => {
@@ -54,7 +55,7 @@ export const getProject = (req, res) => {
   })
 };
 
-// /GET api/projects/:id
+// POST /api/projects
 export const addProject = (req, res) => {
   const token = req.cookies.accessToken;
   if(!token) {
@@ -65,12 +66,14 @@ export const addProject = (req, res) => {
     if(err) return res.status(403).json('Token is not valid!');
     const userId = userInfo.id;
 
-    const q = "INSERT INTO projects (`dateStarted`, `dateFinished`, `name`, `clayType`, `weight`, `size`, `status`, `technique`, `handbuilt`, `location`, `firing`, `glazing`, `notes`, `userId`, `difficultyRating`, `detailsRating`, `finishingRating`) VALUE (?)";
+    let dateStarted = moment(Date.now()).format("YYYY-MM-DD HH:mm:ss");
 
-    const { dateStarted, dateFinished, name, clayType, weight, size, status, technique, handbuilt, location, firing, glazing, notes, difficultyRating, detailsRating, finishingRating } = req.body;
+    const q = "INSERT INTO projects (`dateStarted`, `dateFinished`, `name`, `clayType`, `weight`, `size`, `status`, `technique`, `handbuilt`, `location`, `firing`, `glazing`, `notes`, `userId`, `difficultyRating`, `detailsRating`, `finishingRating`, `img`) VALUE (?)";
+
+    const { dateFinished, name, clayType, weight, size, status, technique, handbuilt, location, firing, glazing, notes, difficultyRating, detailsRating, finishingRating, img } = req.body;
 
     const values = [
-      dateStarted, dateFinished, name, clayType, weight, size, status, technique, handbuilt, location, firing, glazing, notes, userId, difficultyRating, detailsRating, finishingRating
+      dateStarted, dateFinished, name, clayType, weight, size, status, technique, handbuilt, location, firing, glazing, notes, userId, difficultyRating, detailsRating, finishingRating, img
     ];
     
     db.query(q, [values], (err, data) => {
@@ -93,12 +96,12 @@ export const updateProject = (req, res) => {
 
     let userId = userInfo.id;
 
-    let q = "UPDATE projects SET `dateStarted` = ?, `dateFinished` = ?, `name` = ?, `clayType` =?, `weight` = ?, `size` =?, `status` = ?, `technique` = ?, `handbuilt` = ?, `location` = ?, `firing` = ?, `glazing` = ?, `notes` = ?, `userId` = ?, `difficultyRating` = ?, `detailsRating` = ?, `finishingRating` = ? WHERE `id` = ?";
+    let q = "UPDATE projects SET `name` = ?, `clayType` =?, `weight` = ?, `size` =?, `status` = ?, `technique` = ?, `handbuilt` = ?, `location` = ?, `firing` = ?, `glazing` = ?, `notes` = ?, `userId` = ?, `difficultyRating` = ?, `detailsRating` = ?, `finishingRating` = ? WHERE `id` = ?";
 
-    const { dateStarted, dateFinished, name, clayType, weight, size, status, technique, handbuilt, location, firing, glazing, notes, difficultyRating, detailsRating, finishingRating } = req.body;
+    const { name, clayType, weight, size, status, technique, handbuilt, location, firing, glazing, notes, difficultyRating, detailsRating, finishingRating } = req.body;
 
     const values = [
-      dateStarted, dateFinished, name, clayType, weight, size, status, technique, handbuilt, location, firing, glazing, notes, userId, difficultyRating, detailsRating, finishingRating,
+      name, clayType, weight, size, status, technique, handbuilt, location, firing, glazing, notes, userId, difficultyRating, detailsRating, finishingRating,
     ];
 
     db.query(q, [...values, req.params.id], (err, data) => {
