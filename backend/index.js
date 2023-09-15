@@ -1,12 +1,13 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import uploadRoutes from './routes/uploads.js';
 import userRoutes from './routes/users.js';
 import authRoutes from './routes/auth.js';
 import postRoutes from './routes/posts.js';
 import projectRoutes from './routes/projects.js';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import multer from 'multer';
+
 
 const app = express();
 dotenv.config();
@@ -28,30 +29,31 @@ app.use(cors({
 app.use(cookieParser());
 
 
-// can create router for multer file upload stuff
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, `../client/public/upload`) // upload file destination. must add
-  },
-  filename: (req, file, cb) => {
-    // be careful with file keys. they're not camelCase
-    const fieldName = Date.now() + file.originalname;
+// // can create router for multer file upload stuff
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, `../client/public/upload`) // upload file destination. must add
+//   },
+//   filename: (req, file, cb) => {
+//     // be careful with file keys. they're not camelCase
+//     const fieldName = Date.now() + file.originalname;
 
-    cb(null, fieldName)
-  }
-})
+//     cb(null, fieldName)
+//   }
+// })
 
-const upload = multer({ storage: storage });
+// const upload = multer({ storage: storage });
 
-// TODO: change to multiple
-app.post("/api/upload", upload.single("file"), (req, res) => {
-  const file = req.file;
-  res.status(200).json(file.filename);
-})
+// // TODO: change to multiple
+// app.post("/api/upload", upload.single("file"), (req, res) => {
+//   const file = req.file;
+//   res.status(200).json(file.filename);
+// })
 
 // *******************
 
 // ********** Routes *********
+app.use('/api/upload', uploadRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/posts', postRoutes);

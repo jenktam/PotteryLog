@@ -68,18 +68,35 @@ export const addProject = (req, res) => {
 
     let dateStarted = moment(Date.now()).format("YYYY-MM-DD HH:mm:ss");
 
+    // TODO: img is reference to images table
     const q = "INSERT INTO projects (`dateStarted`, `dateFinished`, `name`, `clayType`, `weight`, `size`, `status`, `technique`, `handbuilt`, `location`, `firing`, `glazing`, `notes`, `userId`, `difficultyRating`, `detailsRating`, `finishingRating`, `img`) VALUE (?)";
 
     const { dateFinished, name, clayType, weight, size, status, technique, handbuilt, location, firing, glazing, notes, difficultyRating, detailsRating, finishingRating, img } = req.body;
 
     const values = [
-      dateStarted, dateFinished, name, clayType, weight, size, status, technique, handbuilt, location, firing, glazing, notes, userId, difficultyRating, detailsRating, finishingRating, img
-    ];
+      dateStarted, dateFinished, name, clayType, weight, size, status, technique, handbuilt, location, firing, glazing, notes, userId, difficultyRating, detailsRating, finishingRating, img];
+    console.log('values: ', values);
     
     db.query(q, [values], (err, data) => {
       if(err) return res.status(500).json(err);
       if(data.length) return res.status(409).json("Please fill out the form to add a new project.");
       return res.status(200).json('Project has been created!');
+    })
+
+    let createdAt = moment(Date.now()).format("YYYY-MM-DD HH:mm:ss");
+
+    const { files } = req.body;
+
+    const imagesQuery  = "INSERT INTO images (`createdAt`, `filename`) VALUE (?)";
+
+    // TODO: fix
+    let imagesValues = files.map((file) => [createdAt, file.filename]);
+    console.log('imagesValues: ', imagesValues);
+
+    db.query(imagesQuery, [imagesValues], (err, data) => {
+      if(err) return res.status(500).json(err);
+      if(data.length) return res.status(409).json("Please fill out the form to add a new project.");
+      return res.status(200).json('Images has been uploaded!');
     })
   });
 };

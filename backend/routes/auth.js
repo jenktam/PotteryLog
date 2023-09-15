@@ -1,4 +1,3 @@
-
 import express from 'express';
 import { db } from '../connect.js';
 import { login, register, forgotPassword, resetPassword, logout } from '../controllers/auth.js';

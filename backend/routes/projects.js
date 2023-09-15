@@ -1,4 +1,3 @@
-
 import express from 'express';
 import { getProjects, getProject, updateProject, addProject, deleteProject } from '../controllers/project.js';
 
