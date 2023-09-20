@@ -1,10 +1,13 @@
+import { useContext } from "react";
 import "./navbar.scss";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import WbSunnyOutlinedIcon from "@mui/icons-material/WbSunnyOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { Link, useNavigate } from "react-router-dom";
-import { useContext } from "react";
+import {
+  Button,
+} from '@mui/material';
 import { DarkModeContext } from "../../context/darkModeContext";
 import { AuthContext } from "../../context/authContext";
 
@@ -45,9 +48,9 @@ const Navbar = () => {
           <span>{currentUser.name}</span>
         </div>
         <div>
-          <button onClick={handleLogout}>
+          <Button variant="contained" onClick={handleLogout}>
             Logout
-          </button></div>
+          </Button></div>
       </div>
     </div>
   );
