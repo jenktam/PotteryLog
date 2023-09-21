@@ -69,35 +69,44 @@ export const addProject = (req, res) => {
     let dateStarted = moment(Date.now()).format("YYYY-MM-DD HH:mm:ss");
 
     // TODO: img is reference to images table
-    const q = "INSERT INTO projects (`dateStarted`, `dateFinished`, `name`, `clayType`, `weight`, `size`, `status`, `technique`, `handbuilt`, `location`, `firing`, `glazing`, `notes`, `userId`, `difficultyRating`, `detailsRating`, `finishingRating`, `img`) VALUE (?)";
+    const q = "INSERT INTO projects (`dateStarted`, `dateFinished`, `name`, `clayType`, `weight`, `size`, `status`, `technique`, `handbuilt`, `location`, `firing`, `glazing`, `notes`, `userId`, `difficultyRating`, `detailsRating`, `finishingRating`) VALUE (?)";
 
-    const { dateFinished, name, clayType, weight, size, status, technique, handbuilt, location, firing, glazing, notes, difficultyRating, detailsRating, finishingRating, img } = req.body;
+    const { dateFinished, name, clayType, weight, size, status, technique, handbuilt, location, firing, glazing, notes, difficultyRating, detailsRating, finishingRating } = req.body;
 
     const values = [
-      dateStarted, dateFinished, name, clayType, weight, size, status, technique, handbuilt, location, firing, glazing, notes, userId, difficultyRating, detailsRating, finishingRating, img];
-    console.log('values: ', values);
+      dateStarted, dateFinished, name, clayType, weight, size, status, technique, handbuilt, location, firing, glazing, notes, userId, difficultyRating, detailsRating, finishingRating];
     
     db.query(q, [values], (err, data) => {
       if(err) return res.status(500).json(err);
       if(data.length) return res.status(409).json("Please fill out the form to add a new project.");
-      return res.status(200).json('Project has been created!');
-    })
+      let projectId = data.insertId;
 
-    let createdAt = moment(Date.now()).format("YYYY-MM-DD HH:mm:ss");
+      // second database call
+      // TODO: improve with async and promises
+      if(projectId) {
+        let uploadAt = moment(Date.now()).format("YYYY-MM-DD HH:mm:ss");
 
-    const { files } = req.body;
+        const { files } = req.body;
+        const imagesQuery  = "INSERT INTO images (`filename`, `size`, `mimetype`, `uploadAt`, `projectId`) VALUES ?";
 
-    const imagesQuery  = "INSERT INTO images (`createdAt`, `filename`) VALUE (?)";
+        let imagesValues = files.map(({ filename, size, mimetype }) => [filename, size, mimetype, uploadAt, projectId]);
 
-    // TODO: fix
-    let imagesValues = files.map((file) => [createdAt, file.filename]);
-    console.log('imagesValues: ', imagesValues);
+        // seems correct based on online resources but isn't working. only inserting 1st image
+        db.query(imagesQuery, [imagesValues], (err, data) => {
+          if(err)  return res.status(500).json(err);
+          console.log('Successfully inserted images', data);
+          // if(data.length) return res.status(409).json("Please fill out the form to add a new project.");
+          // return res.status(200).json('Images has been uploaded!');
+          return res.status(200).json('Project has been created!');
+        });
 
-    db.query(imagesQuery, [imagesValues], (err, data) => {
-      if(err) return res.status(500).json(err);
-      if(data.length) return res.status(409).json("Please fill out the form to add a new project.");
-      return res.status(200).json('Images has been uploaded!');
-    })
+        // TODO: remember this for debugging
+        // https://github.com/mysqljs/mysql#performing-queries
+        // console.log('query1', query1.sql);
+
+
+        };
+    });
   });
 };
 

@@ -14,7 +14,7 @@ export const register = (req, res) => {
   db.query(q, [req.body.username], (err, data) => {
     if(err) return res.status(500).json(err);
 
-    // if db returns data, means the user already exists and return error
+    // if db returns data, user already exists so return error
     if(data.length) return res.status(409).json('User already exists')
   });
 
@@ -34,11 +34,11 @@ export const register = (req, res) => {
   });
 };
 
-export const insertResetToken = (email,tokenValue, createdAt, expiredAt, used, userId) => {
+export const insertResetToken = (email, tokenValue, createdAt, expiredAt, used, userId) => {
   const insertedAt = new Date(Date.now());
 
   return new Promise((resolve, reject) => {
-    const q = "INSERT INTO resetPasswordToken (`email`, `tokenValue` ,`createdAt`, `expiredAt`, `used`, `insertedAt`, `userId`) VALUE (?)";
+    const q = "INSERT INTO reset_password_token (`email`, `tokenValue` ,`createdAt`, `expiredAt`, `used`, `insertedAt`, `userId`) VALUE (?)";
 
     const values = [email, tokenValue ,createdAt, expiredAt, used, insertedAt, userId]
     db.query(q, [values], (err, data) => {
@@ -102,7 +102,7 @@ const getUserByEmail = (email) => {
 
 export const expireOldTokens = (email, used) =>{
   return new Promise((resolve, reject)=>{
-    let q = "UPDATE resetPasswordToken SET used = ? WHERE email = ?"
+    let q = "UPDATE reset_password_token SET used = ? WHERE email = ?"
       db.query(q, [used, email], (error)=>{
           if(error){
               return reject(error);
@@ -167,7 +167,6 @@ export const forgotPassword = async(req, res) => {
     const expiredAt = resetTokenExpires;
     const userId = user.id;
 
-    //insert the new token into resetPasswordToken table
     await insertResetToken(email, resetToken,createdAt, expiredAt, 0, userId);
 
     // send email
@@ -196,6 +195,7 @@ export const login = (req, res) => {
 
     const token = jwt.sign({ id: data[0].id }, "secretKey");
 
+    // eslint-disable-next-line
     const { password, ...others } = data[0];
 
     // set accessToken cookie for user

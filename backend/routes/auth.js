@@ -15,7 +15,7 @@ const validateResetToken = async(req, res, next) => {
     return res.status(400).json("Bad request. Client passed malformed request syntax. Please try again.");
   }
 
-  // then verify if resetToken exists in the resetPasswordToken table
+  // verify that resetToken exists in the resetPasswordToken table
   const currentTime = new Date(Date.now());
 
   const token = await findValidToken(resetToken, email, currentTime);
@@ -31,7 +31,7 @@ const validateResetToken = async(req, res, next) => {
 const findValidToken = (token, email, currentTime) => {
   return new Promise((resolve, reject)=> {
     let q = `SELECT * 
-            FROM resetPasswordToken 
+            FROM reset_password_token
             WHERE (email = ? AND tokenValue = ? AND expiredAt > ?)`;
 
     let values = [email, token, currentTime];

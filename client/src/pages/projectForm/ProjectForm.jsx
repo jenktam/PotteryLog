@@ -61,21 +61,18 @@ const ProjectForm = () => {
   console.log('files: ', files);
   const handleSubmit = async (values) => {
     let imgResponse;
-
     // make api call and get async response back and name imgUrl
     if(files) imgResponse = await upload();
-
 
     // want this to show image: imgData.files[0].filename
     // if get back imgUrl, then pass into mutation fn and this creates a new project with the fields and img uploaded
     mutation.mutate({
       ...values,
-      img: imgResponse.files[0].filename,
       files: imgResponse.files,
     });
 
     setFiles(null);
-    navigate("/");
+    // navigate("/");
   };
 
   return (

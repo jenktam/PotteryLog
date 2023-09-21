@@ -15,6 +15,7 @@ export const getUser = (req, res) => {
       if(err) return res.status(500).json(err);
 
       // don't pass in password
+      // eslint-disable-next-line
       const { password, ...info } = data[0];
       return res.status(200).json(info);
     });
