@@ -19,7 +19,7 @@ const ProjectCard = ({ project }) => {
           <CardMedia
             component="img"
             height="194"
-            image={project.img ? `/upload/${project.img}` : NoImage}
+            image={project.coverPic ? `/upload/${project.coverPic}` : NoImage}
             alt="Project Image"
           />
           <Typography sx={{ mb: 1.5 }} color="text.secondary">

@@ -27,7 +27,6 @@ const ProjectForm = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [files, setFiles] = useState(null);
-  // const classes = useStyle();
 
   const upload = async () => {
     try {
@@ -36,8 +35,6 @@ const ProjectForm = () => {
       for(let index in files) {
         formData.append("files", files[index]);
       }
-      console.log('formData: ', formData);
-      // TODO: make insert also insert into images table
       const res = await makeRequest.post('/upload', formData)
       return res.data;
     }
@@ -58,16 +55,14 @@ const ProjectForm = () => {
     }
   });
 
-  console.log('files: ', files);
   const handleSubmit = async (values) => {
     let imgResponse;
     // make api call and get async response back and name imgUrl
     if(files) imgResponse = await upload();
 
-    // want this to show image: imgData.files[0].filename
-    // if get back imgUrl, then pass into mutation fn and this creates a new project with the fields and img uploaded
     mutation.mutate({
       ...values,
+      coverPic: imgResponse.files[0].filename,
       files: imgResponse.files,
     });
 
@@ -86,7 +81,7 @@ const ProjectForm = () => {
               initialValues={{
                 name: '',
                 status: '',
-                img: '',
+                coverPic: '',
                 clayType: '',
                 weight: '',
                 size: '',
@@ -117,18 +112,17 @@ const ProjectForm = () => {
                   <FormControl fullWidth variant="outlined">
                     {/* shows images */}
                     <Box className="imgContainer">
-                      {/* TODO: files is a object with indexes as keys */}
                       {files && Object.values(files).map((file) => {
                         return (
                           <img
                           className="file"
                           alt=""
+                          key={file.id}
                           src={URL.createObjectURL(file)}
                           style={{ maxWidth: '600px', maxHeight: '600px', marginBottom: '18px'}}
                           />
                       )})}
                     </Box>
-                    {/* will create a fake url to upload project */}
                     {/* upload images */}
                     <Box sx={{ mb: 2 }}>
                       <Fab variant="extended" color="primary">
@@ -137,7 +131,6 @@ const ProjectForm = () => {
                           multiple
                           id="file"
                           style={{ display: "none" }}
-                          // only allow to upload 1 single file
                           onChange={(e) => setFiles(e.target.files)}
                         />
                         <label htmlFor="file">

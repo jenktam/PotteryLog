@@ -10,7 +10,6 @@ const storage = multer.diskStorage({
     cb(null, `../client/public/upload`) // upload file destination. must add
   },
   filename: (req, file, cb) => {
-    console.log('file: ', file);
     // be careful with file keys. they're not camelCase
     const fieldName = Date.now() + file.originalname;
 

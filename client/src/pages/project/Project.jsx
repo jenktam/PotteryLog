@@ -8,48 +8,20 @@ import ImageListItem from '@mui/material/ImageListItem';
 import { makeRequest } from '../../axios';
 
 
-const StandardImageList = ({images}) => {
-  let itemData = [
-    {
-      img: images[0],
-      title: 'Breakfast',
-    },
-    {
-      img: images[0],
-      title: 'Breakfast',
-    },
-    {
-      img: images[0],
-      title: 'Breakfast',
-    },
-    {
-      img: images[0],
-      title: 'Breakfast',
-    },
-    {
-      img: images[0],
-      title: 'Breakfast',
-    },
-    {
-      img: images[0],
-      title: 'Breakfast',
-    },
-  ]
+const StandardImageList = ({ images }) => {
   return (
     <>
       <ImageList sx={{ width: 500, height: 450 }} cols={3} rowHeight={164}>
-        {itemData.map((item) => (
-          <ImageListItem key={item.img}>
+        {images.map((item) => (
+          <ImageListItem key={item.filename}>
             <img
-              src={`/upload/${item.img}?w=164&h=164&fit=crop&auto=format`}
-              // srcSet={`/upload/${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-              alt={item.title}
+              src={`/upload/${item.filename}?w=164&h=164&fit=crop&auto=format`}
+              alt={item.filename}
               loading="lazy"
             />
           </ImageListItem>
         ))}
       </ImageList>
-      <div>+ add new image</div>
     </>
   );
 }
@@ -58,12 +30,6 @@ const Project = () => {
   let { id } = useParams();
   const { isLoading, error, data } = useQuery(['projects', id], () => makeRequest.get(`/projects/${id}`)
   .then(res => res.data));
-  
-  // TODO:
-  // const handleClick = (e) => {
-  //   console.log('go to form edit page');
-  // }
-
   if(error) {
     return (
     <div>Something went wrong!</div>
@@ -82,7 +48,7 @@ const Project = () => {
         <Typography variant="h2">
           {data.name}
         </Typography>
-        <StandardImageList images={[data.img]}/>
+        <StandardImageList images={data.images}/>
         <Typography variant="subtitle2">Status: {data.status}</Typography>
         <Divider />
         <Typography variant="h3">
@@ -91,32 +57,7 @@ const Project = () => {
         <Typography variant="body1">Date Started: {data.dateStarted}</Typography>
         <Typography variant="body1">Weight (lbs): {data.clayBody}</Typography>
         <Typography variant="body1">Size (in): {data.size}</Typography>
-        {/* Todo: add categories. outside glazes, inside glaxes, under-glazes, slips */}
-        {/* Database:
-          glazes
-          type - glaze, underglaze, slip, terrasig
-          name - shadow green
-          id
-          glazes = [
-            outside_glazes: {
-              { name: 'white satin', type: glaze, numCoats: 3,}, 
-              { name: 'turquoise blue', type: 'glaze', numCoats: 3},
-              {
-                name: 'deep crystal blue' type: 'glaze', brand: 'Seattle Pottery Supply'
-              },
-            },
-            inside_glazes: {
-              { name: 'white satin', type: glaze, numCoats: 3, brand: 'Seattle Pottery Supply'}, 
-            }
-          ]
-
-          notes: [
-            {
-              title: string: optional,
-              status: enum: optional,
-              description: string: required
-            }
-          ]
+    
         */}
         <Typography variant="body1">Glazes: should be collapsible array{data.glazing}</Typography>
         <Typography variant="body1">Notes: Should be collapsible array {data.notes}</Typography>
@@ -131,7 +72,6 @@ const Project = () => {
         <Link to={`/projects/${data.id}/edit`}>
           <Button variant="contained">Edit</Button>
         </Link>
-
       </Paper>
     </>
     

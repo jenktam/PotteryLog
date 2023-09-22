@@ -23,9 +23,6 @@ const ResetPassword = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('reset password');
-
-    console.log('input: ', input);
     mutation.mutate(input.password);
 
     navigate('/login')

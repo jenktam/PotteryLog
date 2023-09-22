@@ -41,9 +41,6 @@ const ProjectForm = () => {
     // send form fields to server
     return makeRequest.post('/auth/register', newUser);
   }, {
-    // invalidate and refetch
-    // if successful, refetch projects because our query name is projects
-    // -->**search for useQuery(["projects"])
     onSuccess: () => {
       queryClient.invalidateQueries(['auth']);
     }
@@ -51,7 +48,6 @@ const ProjectForm = () => {
 
 
   const handleSubmit = async (values) => {
-    console.log('values: ', values);
     let profileUrl = "";
 
     // make api call and get async response back and name profileUrl
@@ -60,9 +56,8 @@ const ProjectForm = () => {
     mutation.mutate({ ...values, profilePic: profileUrl });
 
     setFile(null);
-    console.log("User created")
+    console.log("User created!")
 
-    // TODO: upon completion. log user in and send email confimration
     navigate("/");
   };
 
@@ -183,7 +178,6 @@ const ProjectForm = () => {
                   </Grid>
 
                   {/* Password */}
-                  {/* TODO: password validation */}
                   <Grid item xs={12} sm={6} md={6}>
                     <Field
                       label="Password"

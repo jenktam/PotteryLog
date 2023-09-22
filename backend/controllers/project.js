@@ -50,7 +50,24 @@ export const getProject = (req, res) => {
       if(err) return res.status(500).json(err);
 
       if(!data.length) return res.status(404).json('Project not found');
-      return res.status(200).json(data[0]);
+      // once get project data from database, get images for project
+      const imagesQuery = `SELECT *
+                            FROM images
+                            WHERE projectId = ?
+                          `;
+
+      let projectId = data[0].id;
+      const imagesValues = [projectId];
+
+      db.query(imagesQuery, imagesValues, (err, imagesData) => {
+        if(err) return res.status(500).json(err);
+        let response = {
+          ...data[0],
+          images: imagesData,
+        }
+        return res.status(200).json(response)
+      });
+
     })
   })
 };
@@ -68,43 +85,33 @@ export const addProject = (req, res) => {
 
     let dateStarted = moment(Date.now()).format("YYYY-MM-DD HH:mm:ss");
 
-    // TODO: img is reference to images table
-    const q = "INSERT INTO projects (`dateStarted`, `dateFinished`, `name`, `clayType`, `weight`, `size`, `status`, `technique`, `handbuilt`, `location`, `firing`, `glazing`, `notes`, `userId`, `difficultyRating`, `detailsRating`, `finishingRating`) VALUE (?)";
+    const q = "INSERT INTO projects (`dateStarted`, `dateFinished`, `name`, `clayType`, `weight`, `size`, `status`, `technique`, `handbuilt`, `location`, `firing`, `glazing`, `notes`, `userId`, `difficultyRating`, `detailsRating`, `finishingRating`, `coverPic`) VALUE (?)";
 
-    const { dateFinished, name, clayType, weight, size, status, technique, handbuilt, location, firing, glazing, notes, difficultyRating, detailsRating, finishingRating } = req.body;
+    const { dateFinished, name, clayType, weight, size, status, technique, handbuilt, location, firing, glazing, notes, difficultyRating, detailsRating, finishingRating, coverPic } = req.body;
 
     const values = [
-      dateStarted, dateFinished, name, clayType, weight, size, status, technique, handbuilt, location, firing, glazing, notes, userId, difficultyRating, detailsRating, finishingRating];
+      dateStarted, dateFinished, name, clayType, weight, size, status, technique, handbuilt, location, firing, glazing, notes, userId, difficultyRating, detailsRating, finishingRating, coverPic];
     
     db.query(q, [values], (err, data) => {
       if(err) return res.status(500).json(err);
       if(data.length) return res.status(409).json("Please fill out the form to add a new project.");
       let projectId = data.insertId;
 
-      // second database call
       // TODO: improve with async and promises
       if(projectId) {
         let uploadAt = moment(Date.now()).format("YYYY-MM-DD HH:mm:ss");
 
         const { files } = req.body;
-        const imagesQuery  = "INSERT INTO images (`filename`, `size`, `mimetype`, `uploadAt`, `projectId`) VALUES ?";
+        const imagesQuery  = "INSERT INTO images (`name`, `filename`, `size`, `mimetype`, `uploadAt`, `projectId`) VALUES ?";
 
-        let imagesValues = files.map(({ filename, size, mimetype }) => [filename, size, mimetype, uploadAt, projectId]);
+        let imagesValues = files.map(({ originalname, filename, size, mimetype }) => [originalname, filename, size, mimetype, uploadAt, projectId]);
 
-        // seems correct based on online resources but isn't working. only inserting 1st image
         db.query(imagesQuery, [imagesValues], (err, data) => {
           if(err)  return res.status(500).json(err);
-          console.log('Successfully inserted images', data);
-          // if(data.length) return res.status(409).json("Please fill out the form to add a new project.");
-          // return res.status(200).json('Images has been uploaded!');
+
+          console.log('Successfully inserted images:', data);
           return res.status(200).json('Project has been created!');
         });
-
-        // TODO: remember this for debugging
-        // https://github.com/mysqljs/mysql#performing-queries
-        // console.log('query1', query1.sql);
-
-
         };
     });
   });
@@ -134,7 +141,6 @@ export const updateProject = (req, res) => {
       if(err) return res.status(500).json(err);
 
       // handle hitting project that is not in db
-      // is this correct if put allows upsert
       if(data.affectedRows === 0) return res.status(404).json('Project does not exist so can\'t update it.');
 
       return res.status(200).json('Updated!');

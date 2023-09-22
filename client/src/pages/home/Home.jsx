@@ -6,7 +6,7 @@ import {
   Button,
   Typography,
 } from '@mui/material';
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   let navigate = useNavigate();
@@ -20,10 +20,10 @@ const Home = () => {
     <>
       <Box>
         <Typography variant="h1" style={{textAlign: 'center'}}>Active Pots</Typography>
-        <Projects />
         <Button onClick={handleNewProject}>
           <AddIcon /> Add new project
         </Button>
+        <Projects />
 
       </Box>
     </>

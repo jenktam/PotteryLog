@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik, Field, Form } from 'formik';
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { 
-  Typography, 
   Select,
   InputLabel,
   MenuItem,
@@ -12,8 +11,12 @@ import {
   Card,
   CardHeader,
   CardActions,
+  Fab,
+  Box,
+  Typography,
 Button, } from '@mui/material';
-  import { Link, useNavigate } from "react-router-dom";
+import AddIcon from '@mui/icons-material/Add';
+import { useNavigate } from "react-router-dom";
 import { useQuery } from '@tanstack/react-query';
 import { TextField } from "formik-material-ui"
 import { useParams } from 'react-router';
@@ -24,9 +27,28 @@ const ProjectEdit = () => {
   const queryClient = useQueryClient();
   let { id } = useParams();
   const navigate = useNavigate();
+  const [files, setFiles] = useState(null);
+
   const { isLoading, error, data } = useQuery(['projects', id], () => makeRequest.get(`/projects/${id}`)
   .then(res => res.data));
-  
+
+  const upload = async () => {
+    try {
+      const formData = new FormData();
+
+      for(let index in files) {
+        formData.append("files", files[index]);
+      }
+
+      const res = await makeRequest.post('/upload', formData);
+
+      return res.data;
+    }
+    catch(err) {
+      console.log(err);
+    }
+  };
+
   const mutation = useMutation((updatedProject) => {
     return makeRequest.put(`/projects/${data.id}`, updatedProject);
   }, {
@@ -72,6 +94,7 @@ const ProjectEdit = () => {
                 firing: data.firing,
                 glazing: data.glazing,
                 notes: data.notes,
+                images: data.images || [],
               }}
               enableReinitialize
               validationSchema={ProjectSchema}
@@ -90,6 +113,47 @@ const ProjectEdit = () => {
               }) => (
               <Form onSubmit={handleSubmit} sx={{ m: 1, minWidth: 400 }}>
                 <CardContent>
+                {/* Upload Image */}
+                <Grid item xs={12} sm={6} md={12}>
+                  <FormControl fullWidth variant="outlined">
+                    {/* shows images */}
+                    <Box className="imgContainer">
+                      {data?.images && Object.values(data?.images).map((file) => {
+                        return (
+                          <img
+                          className="file"
+                          alt=""
+                          key={file.id}
+                          // if react state for files exists, then update images with the files from there, otherwise, show existing images
+                          // TODO: fix additional uploads for images in /ProjectEdit form
+                          src={files ? URL.createObjectURL(file) : `/upload/${file.filename}`}
+                          style={{ maxWidth: '600px', maxHeight: '600px', marginBottom: '18px'}}
+                          />
+                      )})}
+                    </Box>
+                    {/* will create a fake url to upload project */}
+                    {/* upload images */}
+                    <Box sx={{ mb: 2 }}>
+                      <Fab variant="extended" color="primary">
+                        <input
+                          type="file"
+                          multiple
+                          id="file"
+                          style={{ display: "none" }}
+                          // only allow to upload 1 single file
+                          onChange={(e) => setFiles(e.target.files)}
+                        />
+                        <label htmlFor="file">
+                          <div className="item" sx={{ display: 'flex' }}>
+                            <AddIcon sx={{ mr: 1 }} />
+                            <Typography component="span">Add Image</Typography>
+                          </div>
+                        </label>
+                      </Fab>
+                    </Box>
+                  </FormControl>
+                </Grid>
+
                 <Grid item container spacing={1} justify="center">
                   <Grid item xs={12} sm={6} md={6}>
                     <Field
