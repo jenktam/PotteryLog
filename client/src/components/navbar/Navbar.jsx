@@ -1,21 +1,19 @@
-import { useContext } from "react";
-import "./navbar.scss";
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
-import WbSunnyOutlinedIcon from "@mui/icons-material/WbSunnyOutlined";
-import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import { Link, useNavigate } from "react-router-dom";
-import {
-  Button,
-} from '@mui/material';
-import { DarkModeContext } from "../../context/darkModeContext";
-import { AuthContext } from "../../context/authContext";
+import { useContext } from 'react';
+import './navbar.scss';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
+import WbSunnyOutlinedIcon from '@mui/icons-material/WbSunnyOutlined';
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+import { Link, useNavigate } from 'react-router-dom';
+import { Button } from '@mui/material';
+import { DarkModeContext } from '../../context/darkModeContext';
+import { AuthContext } from '../../context/authContext';
 
 const Navbar = () => {
   const { toggle, darkMode } = useContext(DarkModeContext);
   const navigate = useNavigate();
 
-  const {currentUser, logout} = useContext(AuthContext);
+  const { currentUser, logout } = useContext(AuthContext);
 
   const handleLogout = (e) => {
     logout();
@@ -23,9 +21,9 @@ const Navbar = () => {
   };
 
   return (
-    <div className="navbar">
-      <div className="left">
-        <Link to="/" style={{ textDecoration: "none" }}>
+    <div className='navbar'>
+      <div className='left'>
+        <Link to='/' style={{ textDecoration: 'none' }}>
           <span>pottery log</span>
         </Link>
         <HomeOutlinedIcon />
@@ -34,23 +32,21 @@ const Navbar = () => {
         ) : (
           <DarkModeOutlinedIcon onClick={toggle} />
         )}
-        <div className="search">
+        <div className='search'>
           <SearchOutlinedIcon />
-          <input type="text" placeholder="Search..." />
+          <input type='text' placeholder='Search...' />
         </div>
       </div>
-      <div className="right">
-        <div className="user">
-          <img
-            src={currentUser.profilePic}
-            alt=""
-          />
+      <div className='right'>
+        <div className='user'>
+          <img src={currentUser.profilePic} alt='' />
           <span>{currentUser.name}</span>
         </div>
         <div>
-          <Button variant="contained" onClick={handleLogout}>
+          <Button variant='contained' onClick={handleLogout}>
             Logout
-          </Button></div>
+          </Button>
+        </div>
       </div>
     </div>
   );

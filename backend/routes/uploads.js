@@ -7,28 +7,24 @@ const router = express.Router();
 // can create router for multer file upload stuff
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, `../client/public/upload`) // upload file destination. must add
+    cb(null, `../client/public/upload`); // upload file destination. must add
   },
   filename: (req, file, cb) => {
     // be careful with file keys. they're not camelCase
     const fieldName = Date.now() + file.originalname;
 
-    cb(null, fieldName)
-  }
-})
+    cb(null, fieldName);
+  },
+});
 
 const upload = multer({ storage: storage });
 
 // // upload one file
-router.post('/one', upload.single("file"), getUploads);
+router.post('/one', upload.single('file'), getUploads);
 
 // upload multiple files
-router.post('/', 
-  upload.array("files"), 
-  getUploads, 
-  (error, req, res) => {
-    res.status(400).send({ error: error.message })
-  },
-  );
+router.post('/', upload.array('files'), getUploads, (error, req, res) => {
+  res.status(400).send({ error: error.message });
+});
 
 export default router;

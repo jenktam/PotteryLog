@@ -15,37 +15,35 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const Projects = () => {
-  const { isLoading, error, data } = useQuery(['projects'], () => makeRequest.get('/projects')
-  .then(res => res.data));
+  const { isLoading, error, data } = useQuery(['projects'], () =>
+    makeRequest.get('/projects').then((res) => res.data)
+  );
 
-  if(error) return (
-    <div>Something went wrong! </div>
-  )
+  if (error) return <div>Something went wrong! </div>;
 
-  if(isLoading) {
-    return (
-      <div>Loading...</div>
-    )
+  if (isLoading) {
+    return <div>Loading...</div>;
   }
 
   return (
     <>
-        <Grid 
-          container
-          spacing={2} 
-          direction="row"
-          justifyContent="center"
-          alignItems="center"
+      <Grid
+        container
+        spacing={2}
+        direction='row'
+        justifyContent='center'
+        alignItems='center'
       >
-        {data && data.map((project) => {
-          return (
-            <Grid item xs={6} md={3} key={project.id}>
-              <Item>
-                <ProjectCard project={project} key={project.id} />
-              </Item>
-            </Grid>
-          )
-        })}
+        {data &&
+          data.map((project) => {
+            return (
+              <Grid item xs={6} md={3} key={project.id}>
+                <Item>
+                  <ProjectCard project={project} key={project.id} />
+                </Item>
+              </Grid>
+            );
+          })}
       </Grid>
     </>
   );

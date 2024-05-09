@@ -1,8 +1,13 @@
 import React from 'react';
-import {Card, CardActions, CardContent, CardMedia,
-Typography } from '@mui/material';
+import {
+  Card,
+  CardActions,
+  CardContent,
+  CardMedia,
+  Typography,
+} from '@mui/material';
 // import NoImage from "../../assets/defaultProjectImage.png";
-import NoImage from "../../assets/defaultProjectImage.jpeg";
+import NoImage from '../../assets/defaultProjectImage.jpeg';
 import { Link } from 'react-router-dom';
 
 const ProjectCard = ({ project }) => {
@@ -10,35 +15,27 @@ const ProjectCard = ({ project }) => {
     <>
       <Card>
         <CardContent>
-          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+          <Typography sx={{ fontSize: 14 }} color='text.secondary' gutterBottom>
             {project.dateStarted} - {project.dateFinished}
           </Typography>
-          <Typography variant="h5" component="div">
+          <Typography variant='h5' component='div'>
             {project.name}
           </Typography>
           <CardMedia
-            component="img"
-            height="194"
+            component='img'
+            height='194'
             image={project.coverPic ? `/upload/${project.coverPic}` : NoImage}
-            alt="Project Image"
+            alt='Project Image'
           />
-          <Typography sx={{ mb: 1.5 }} color="text.secondary">
+          <Typography sx={{ mb: 1.5 }} color='text.secondary'>
             {project.status}
           </Typography>
-          <Typography variant="body2">
-            Weight: {project.weight}
-          </Typography>
-          <Typography variant="body2">
-            Size: {project.size}
-          </Typography>
-          <Typography variant="body2">
-            Notes: {project.notes}
-          </Typography>
+          <Typography variant='body2'>Weight: {project.weight}</Typography>
+          <Typography variant='body2'>Size: {project.size}</Typography>
+          <Typography variant='body2'>Notes: {project.notes}</Typography>
         </CardContent>
         <CardActions>
-          <Link to={`/projects/${project.id}`}>
-            Learn More
-          </Link>
+          <Link to={`/projects/${project.id}`}>Learn More</Link>
         </CardActions>
       </Card>
     </>

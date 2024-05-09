@@ -4,3 +4,7 @@
 .pnp.cjs
 schema.graphql
 tsconfig.json
+
+# Ignore artifacts:
+build
+coverage
