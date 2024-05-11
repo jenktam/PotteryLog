@@ -9,7 +9,6 @@ import ProjectCard from 'src/components/projectCard/ProjectCard';
 import { useQuery } from '@tanstack/react-query';
 import { makeRequest } from '../../axios';
 import Accordion from 'src/components/accordion/Accordion';
-import { useAccordion } from './useAccordion';
 import { ColumnTypes } from 'src/components/constants/enums';
 
 const StyledGrid = styled(Grid)(({ theme }) => ({
@@ -23,89 +22,72 @@ const StyledGrid = styled(Grid)(({ theme }) => ({
 
 const Home = () => {
   let navigate = useNavigate();
-  const { isLoading, error, data } = useQuery(['projects'], () =>
+  const [orders, setOrders] = useState<any[]>([]);
+  // expandedPanel is used to keep track of which panel is expanded. Each panel's expansion is managed individually.
+  const [expandedPanels, setExpandedPanels] = useState<Record<string, boolean>>(
+    {}
+  );
+
+  const { data } = useQuery(['projects'], () =>
     makeRequest.get('/projects').then((res) => res.data)
   );
 
-  const [orders, setOrders] = useState<any[] | undefined>([]);
   const { THROWN, TRIMMED, BISQUED, GLAZED, COMPLETED, SOLD, GIFTED } =
     ColumnTypes;
 
-  // Makes sure that if orders changes, moves cards to correct columns
-  const columnItem = React.useMemo(
-    () => (columnName: string) => {
-      return (
-        orders &&
-        orders
-          .filter((order) => order.status === columnName)
-          .map((order, index) => (
-            <Accordion
-              id={index}
-              title={order.name}
-              content={
-                <ProjectCard
-                  project={order}
-                  key={order.id}
-                  setOrders={setOrders}
-                />
-              }
-            />
-          ))
-      );
-    },
-    [orders]
-  );
-
-  //creating side effects based on the data's response.
   useEffect(() => {
-    setOrders(data);
+    if (data) {
+      setOrders(data);
+    }
   }, [data]);
 
-  const handleNewProject = (e: any) => {
-    e.preventDefault();
+  const handleChange = (id: string) => {
+    setExpandedPanels((prev) => ({
+      ...prev,
+      // Toggles the panel's expansion state
+      [id]: !prev[id],
+    }));
+  };
 
+  const handleNewProject = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     navigate('/projects/form');
+  };
+
+  const renderAccordion = (columnName: string) => {
+    return (
+      orders &&
+      orders
+        .filter((order) => order.status === columnName)
+        .map((order, index) => {
+          const strOrderId = `project-${order.id}`;
+          return (
+            <Accordion
+              key={strOrderId}
+              id={strOrderId}
+              onChange={() => handleChange(strOrderId)}
+              expanded={expandedPanels[strOrderId] || false}
+              title={order.name}
+              content={<ProjectCard project={order} setOrders={setOrders} />}
+            />
+          );
+        })
+    );
   };
 
   return (
     <>
       {/* Drag and Drop */}
       <Grid container spacing={2} style={{ margin: '24px 0' }}>
-        <StyledGrid item xs={2}>
-          <Column name={THROWN} setOrders={setOrders}>
-            {columnItem(THROWN)}
-          </Column>
-        </StyledGrid>
-        <StyledGrid item xs={2}>
-          <Column name={TRIMMED} setOrders={setOrders}>
-            {columnItem(TRIMMED)}
-          </Column>
-        </StyledGrid>
-        <StyledGrid item xs={2}>
-          <Column name={BISQUED} setOrders={setOrders}>
-            {columnItem(BISQUED)}
-          </Column>
-        </StyledGrid>
-        <StyledGrid item xs={2}>
-          <Column name={GLAZED} setOrders={setOrders}>
-            {columnItem(GLAZED)}
-          </Column>
-        </StyledGrid>
-        <StyledGrid item xs={2}>
-          <Column name={COMPLETED} setOrders={setOrders}>
-            {columnItem(COMPLETED)}
-          </Column>
-        </StyledGrid>
-        <StyledGrid item xs={2}>
-          <Column name={SOLD} setOrders={setOrders}>
-            {columnItem(SOLD)}
-          </Column>
-        </StyledGrid>
-        <StyledGrid item xs={2}>
-          <Column name={GIFTED} setOrders={setOrders}>
-            {columnItem(GIFTED)}
-          </Column>
-        </StyledGrid>
+        {[THROWN, TRIMMED, BISQUED, GLAZED, COMPLETED, SOLD, GIFTED].map(
+          (columnName) => (
+            <StyledGrid item xs={2} key={columnName}>
+              <Column name={columnName} setOrders={setOrders}>
+                {renderAccordion(columnName)}
+              </Column>
+            </StyledGrid>
+          )
+        )}
       </Grid>
 
       <Box>

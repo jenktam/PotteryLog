@@ -48,35 +48,23 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 }));
 
 interface CustomizedAccordionsProps {
-  id: number;
+  id: string;
   title: React.ReactNode;
   content: React.ReactNode;
+  expanded: boolean;
+  onChange: (event: React.SyntheticEvent, isExpanded: boolean) => void;
 }
 
 export default function CustomizedAccordions({
   id,
   title,
   content,
+  expanded,
+  onChange,
 }: CustomizedAccordionsProps) {
-  const [prevPanel, setPrevPanel] = React.useState<string | null>(null);
-  const [expandedPanel, setExpandedPanel] = React.useState<string | false>(
-    prevPanel
-  );
-
-  const handleChange =
-    (panel: string, prevPanel, setPrevPanel: Function) =>
-    (event: React.SyntheticEvent, isExpanded: boolean) => {
-      console.log('isExpanded: ', isExpanded);
-      console.log('expandedPanel: ', expandedPanel);
-      setExpandedPanel(isExpanded ? panel : false);
-    };
-
   return (
     <div>
-      <Accordion
-        expanded={expandedPanel === `project-${id}`}
-        onChange={handleChange(`project-${id}`, prevPanel, setPrevPanel)}
-      >
+      <Accordion id={id} expanded={expanded} onChange={onChange}>
         <AccordionSummary aria-controls='panel1d-content' id='panel1d-header'>
           <Typography>{title}</Typography>
         </AccordionSummary>

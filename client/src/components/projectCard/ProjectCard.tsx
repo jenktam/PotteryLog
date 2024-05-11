@@ -26,11 +26,9 @@ interface IProject {
 
 const ProjectCard = ({
   project,
-  key,
   setOrders,
 }: {
   project: IProject;
-  key: number;
   setOrders?: any;
 }) => {
   const {
