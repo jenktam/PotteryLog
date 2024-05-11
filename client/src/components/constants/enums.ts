@@ -1,8 +1,11 @@
 export enum ColumnTypes {
-  ORDERS = 'Orders',
-  IN_PROGRESS = 'In Progress',
-  DELIVERED = 'Delivered',
-  RETURNED = 'Returned',
+  THROWN = 'Thrown',
+  TRIMMED = 'Trimmed',
+  BISQUED = 'Bisqued',
+  GLAZED = 'Glazed',
+  COMPLETED = 'Completed',
+  SOLD = 'Sold',
+  GIFTED = 'Gifted',
 }
 
 export enum cardType {

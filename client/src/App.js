@@ -79,56 +79,6 @@ function App() {
     return children;
   };
 
-  // const router = createBrowserRouter([
-  //   {
-  //     path: '/',
-  //     element: (
-  //       <ProtectedRoute>
-  //         <Layout />
-  //       </ProtectedRoute>
-  //     ),
-  //     children: [
-  //       {
-  //         path: '/',
-  //         element: <Home />,
-  //       },
-  //       // TODO: add redirect for /projects
-  //       {
-  //         path: '/projects',
-  //         element: <Home />,
-  //       },
-  //       {
-  //         path: '/profile/:id',
-  //         element: <Profile />,
-  //       },
-  //       {
-  //         path: '/projects/:id',
-  //         element: <Project/>,
-  //       },
-  //       {
-  //         path: '/projects/:id/edit',
-  //         element: <ProjectEdit/>,
-  //       },
-  //       {
-  //         path: '/projects/form',
-  //         element: <ProjectForm />,
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     path: '/login',
-  //     element: <Login />,
-  //   },
-  //   {
-  //     path: '/register',
-  //     element: <Register />,
-  //   },
-  //   {
-  //     path: '/reset-password',
-  //     element: <ResetPassword />,
-  //   },
-  // ]);
-
   return (
     <div>
       <QueryClientProvider client={queryClient}>
@@ -184,7 +134,6 @@ function App() {
                         <ProtectedRoute>
                           <Layout />
                         </ProtectedRoute>
-                        <Outlet />
                       </ThemedLayoutV2>
                     }
                   >

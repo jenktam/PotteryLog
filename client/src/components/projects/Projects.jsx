@@ -4,7 +4,7 @@ import { Grid } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import { useQuery } from '@tanstack/react-query';
 import { makeRequest } from '../../axios';
-import ProjectCard from '../projectCard/ProjectCard';
+import ProjectCard from '../projectCard/ProjectCard.tsx';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',

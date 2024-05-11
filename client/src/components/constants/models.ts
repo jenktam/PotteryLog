@@ -16,5 +16,5 @@ export interface IProduct {
   id: number;
   name: string;
   material: string;
-  column?: ColumnTypes.ORDERS;
+  column?: ColumnTypes.THROWN;
 }

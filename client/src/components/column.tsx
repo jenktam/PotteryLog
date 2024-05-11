@@ -1,7 +1,7 @@
 import React from 'react';
-import { Row, Col } from 'antd';
+import { Typography } from '@mui/material';
 import { useDrop } from 'react-dnd';
-import { cardType } from './constants/enums.ts';
+import { cardType } from './constants/enums';
 
 function Column({
   children,
@@ -15,13 +15,12 @@ function Column({
   const [{ isOver }, dropRef] = useDrop({
     accept: cardType.ORDER,
     drop: (item, monitor) => {
-      // This connects the card to the column via the name in dropResult in card.tsx
+      // name = column name
       return {
         name,
       };
     },
     collect: (monitor) => {
-      // console.log('monitor: ', monitor);
       return {
         isOver: monitor.isOver(),
         canDrop: monitor.canDrop(),
@@ -30,41 +29,29 @@ function Column({
   });
 
   return (
-    <Row gutter={30}>
-      <Col
+    <>
+      <Typography
         style={{
-          backgroundColor: '#e3e7ee',
-          width: '270px',
-          padding: '15px',
-          minHeight: '170px',
-          maxHeight: '690px',
-          borderRadius: '5px',
-          overflowY: 'scroll',
+          fontSize: '17px',
+          marginLeft: '10px',
+          marginBottom: '15px',
+          color: '#84878c',
         }}
       >
-        <div
-          style={{
-            fontSize: '17px',
-            marginLeft: '10px',
-            marginBottom: '15px',
-            color: '#84878c',
-          }}
-        >
-          {name}
-        </div>
-        <div
-          ref={dropRef}
-          style={{
-            width: '100%',
-            height: '75%',
-            padding: '4px',
-            border: isOver ? 'dashed 1px black' : '',
-          }}
-        >
-          {children}
-        </div>
-      </Col>
-    </Row>
+        Name: {name}
+      </Typography>
+      <Typography
+        ref={dropRef}
+        style={{
+          width: '100%',
+          height: '100%',
+          padding: '4px',
+          border: isOver ? 'dashed 1px black' : '',
+        }}
+      >
+        {children}
+      </Typography>
+    </>
   );
 }
 

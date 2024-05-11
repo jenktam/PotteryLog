@@ -1,4 +1,4 @@
-import { ColumnTypes } from './enums.ts';
+import { ColumnTypes } from './enums';
 import { IProduct } from '../../components/constants/models';
 import { useList } from '@refinedev/core';
 
@@ -18,7 +18,7 @@ function useData() {
   const newArr = data?.data.map((i: IProduct) => {
     return {
       ...i,
-      column: ColumnTypes.ORDERS,
+      column: ColumnTypes.THROWN,
     };
   });
 

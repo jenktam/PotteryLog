@@ -1,85 +1,113 @@
-import React, { useEffect, useState } from 'react'
-import Projects from '../../components/projects/Projects.jsx'
+import React, { useEffect, useState } from 'react';
+import Projects from 'src/components/projects/Projects';
 import AddIcon from '@mui/icons-material/Add';
-import {
-  Box,
-  Button,
-  Typography,
-} from '@mui/material';
-// TODO: fix
-import { Space } from 'antd'
-import { useNavigate } from "react-router-dom";
-import Column from "../../components/column.tsx";
-import Cards from "../../components/card.tsx";
-import { ColumnTypes } from "../../components/constants/enums.ts";
-import useData from '../../components/constants/data.ts'
+import { Box, Button, Typography, Grid } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';
+import Column from 'src/components/column';
+import ProjectCard from 'src/components/projectCard/ProjectCard';
+import { useQuery } from '@tanstack/react-query';
+import { makeRequest } from '../../axios';
+import { ColumnTypes } from 'src/components/constants/enums';
 
-console.log('Column: ', Column);
+const StyledGrid = styled(Grid)(({ theme }) => ({
+  backgroundColor: '#e0e0e0',
+  padding: '15px',
+  minHeight: '170px',
+  maxHeight: '500px',
+  borderRadius: '5px',
+  overflowY: 'scroll',
+  marginRight: '20px',
+}));
+
 const Home = () => {
   let navigate = useNavigate();
-  const [newArr, products] = useData();
+  const { isLoading, error, data } = useQuery(['projects'], () =>
+    makeRequest.get('/projects').then((res) => res.data)
+  );
+
   const [orders, setOrders] = useState<any[] | undefined>([]);
-  const { ORDERS, IN_PROGRESS, DELIVERED, RETURNED } = ColumnTypes
-    
+  const { THROWN, TRIMMED, BISQUED, GLAZED, COMPLETED, SOLD, GIFTED } =
+    ColumnTypes;
+
   // Makes sure that if orders changes, moves cards to correct columns
-  const columnItem = React.useMemo(() => (columnName: string) => {
+  const columnItem = React.useMemo(
+    () => (columnName: string) => {
       return (
-        orders && orders
-        .filter((order) => order.column === columnName)
-        .map((order, index) => (
-          <Cards
-          key={order.id}
-          name={order.name}
-          material={order.material}
-          setOrders={setOrders}
-          index={index}
-          />
+        orders &&
+        orders
+          .filter((order) => order.status === columnName)
+          .map((order, index) => (
+            <ProjectCard project={order} key={order.id} setOrders={setOrders} />
           ))
-          )
-  }, [orders])
-  
+      );
+    },
+    [orders]
+  );
+
   //creating side effects based on the data's response.
   useEffect(() => {
-  setOrders(newArr);
-}, [products]);
+    setOrders(data);
+  }, [data]);
 
   const handleNewProject = (e: any) => {
     e.preventDefault();
 
     navigate('/projects/form');
-  }
+  };
 
   return (
     <>
       {/* Drag and Drop */}
-      <div>
-      <Space
-        direction="horizontal"
-        align="baseline"
-        size={109}
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          marginTop: "20px",
-        }}
-      >
-        <Column name={ORDERS} setOrders={setOrders}>{columnItem(ORDERS)}</Column>
-        <Column name={IN_PROGRESS} setOrders={setOrders}>{columnItem(IN_PROGRESS)}</Column>
-        <Column name={DELIVERED} setOrders={setOrders}>{columnItem(DELIVERED)}</Column>
-        <Column name={RETURNED} setOrders={setOrders}>{columnItem(RETURNED)} </Column>
-      </Space>
-    </div>
+      <Grid container spacing={2}>
+        <StyledGrid item xs={1.5}>
+          <Column name={THROWN} setOrders={setOrders}>
+            {columnItem(THROWN)}
+          </Column>
+        </StyledGrid>
+        <StyledGrid item xs={1.5}>
+          <Column name={TRIMMED} setOrders={setOrders}>
+            {columnItem(TRIMMED)}
+          </Column>
+        </StyledGrid>
+        <StyledGrid item xs={1.5}>
+          <Column name={BISQUED} setOrders={setOrders}>
+            {columnItem(BISQUED)}
+          </Column>
+        </StyledGrid>
+        <StyledGrid item xs={1.5}>
+          <Column name={GLAZED} setOrders={setOrders}>
+            {columnItem(GLAZED)}
+          </Column>
+        </StyledGrid>
+        <StyledGrid item xs={1.5}>
+          <Column name={COMPLETED} setOrders={setOrders}>
+            {columnItem(COMPLETED)}
+          </Column>
+        </StyledGrid>
+        <StyledGrid item xs={1.5}>
+          <Column name={SOLD} setOrders={setOrders}>
+            {columnItem(SOLD)}
+          </Column>
+        </StyledGrid>
+        <StyledGrid item xs={1.5}>
+          <Column name={GIFTED} setOrders={setOrders}>
+            {columnItem(GIFTED)}
+          </Column>
+        </StyledGrid>
+      </Grid>
 
       <Box>
-        <Typography variant="h1" style={{textAlign: 'center'}}>Active Pots</Typography>
+        <Typography variant='h1' style={{ textAlign: 'center' }}>
+          Active Pots
+        </Typography>
         <Button onClick={handleNewProject}>
           <AddIcon /> Add new project
         </Button>
         <Projects />
-
       </Box>
     </>
-  )
+  );
 };
 
 export default Home;
