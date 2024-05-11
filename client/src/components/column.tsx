@@ -38,7 +38,7 @@ function Column({
           color: '#84878c',
         }}
       >
-        Name: {name}
+        {name}
       </Typography>
       <Typography
         ref={dropRef}

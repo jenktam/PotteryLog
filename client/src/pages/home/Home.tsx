@@ -8,11 +8,12 @@ import Column from 'src/components/column';
 import ProjectCard from 'src/components/projectCard/ProjectCard';
 import { useQuery } from '@tanstack/react-query';
 import { makeRequest } from '../../axios';
+import Accordion from 'src/components/accordion/Accordion';
+import { useAccordion } from './useAccordion';
 import { ColumnTypes } from 'src/components/constants/enums';
 
 const StyledGrid = styled(Grid)(({ theme }) => ({
   backgroundColor: '#e0e0e0',
-  padding: '15px',
   minHeight: '170px',
   maxHeight: '500px',
   borderRadius: '5px',
@@ -38,7 +39,17 @@ const Home = () => {
         orders
           .filter((order) => order.status === columnName)
           .map((order, index) => (
-            <ProjectCard project={order} key={order.id} setOrders={setOrders} />
+            <Accordion
+              id={index}
+              title={order.name}
+              content={
+                <ProjectCard
+                  project={order}
+                  key={order.id}
+                  setOrders={setOrders}
+                />
+              }
+            />
           ))
       );
     },
@@ -59,38 +70,38 @@ const Home = () => {
   return (
     <>
       {/* Drag and Drop */}
-      <Grid container spacing={2}>
-        <StyledGrid item xs={1.5}>
+      <Grid container spacing={2} style={{ margin: '24px 0' }}>
+        <StyledGrid item xs={2}>
           <Column name={THROWN} setOrders={setOrders}>
             {columnItem(THROWN)}
           </Column>
         </StyledGrid>
-        <StyledGrid item xs={1.5}>
+        <StyledGrid item xs={2}>
           <Column name={TRIMMED} setOrders={setOrders}>
             {columnItem(TRIMMED)}
           </Column>
         </StyledGrid>
-        <StyledGrid item xs={1.5}>
+        <StyledGrid item xs={2}>
           <Column name={BISQUED} setOrders={setOrders}>
             {columnItem(BISQUED)}
           </Column>
         </StyledGrid>
-        <StyledGrid item xs={1.5}>
+        <StyledGrid item xs={2}>
           <Column name={GLAZED} setOrders={setOrders}>
             {columnItem(GLAZED)}
           </Column>
         </StyledGrid>
-        <StyledGrid item xs={1.5}>
+        <StyledGrid item xs={2}>
           <Column name={COMPLETED} setOrders={setOrders}>
             {columnItem(COMPLETED)}
           </Column>
         </StyledGrid>
-        <StyledGrid item xs={1.5}>
+        <StyledGrid item xs={2}>
           <Column name={SOLD} setOrders={setOrders}>
             {columnItem(SOLD)}
           </Column>
         </StyledGrid>
-        <StyledGrid item xs={1.5}>
+        <StyledGrid item xs={2}>
           <Column name={GIFTED} setOrders={setOrders}>
             {columnItem(GIFTED)}
           </Column>

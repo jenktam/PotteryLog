@@ -28,31 +28,10 @@ const ProjectCard = ({
   project,
   key,
   setOrders,
-  // name,
-  // dateStarted,
-  // dateFinished,
-  // status,
-  // weight,
-  // size,
-  // notes,
-  // setOrders,
-  // index,
-  // coverPic,
-  // id,
 }: {
   project: IProject;
   key: number;
-  // name: string;
-  // dateStarted: string;
-  // dateFinished: string;
-  // status: string;
-  // weight: number;
-  // size: string;
-  // notes: string;
   setOrders?: any;
-  // index: number;
-  // coverPic: string;
-  // id: number;
 }) => {
   const {
     name,
@@ -137,9 +116,6 @@ const ProjectCard = ({
         <CardContent>
           <Typography sx={{ fontSize: 14 }} color='text.secondary' gutterBottom>
             {dateStarted} - {dateFinished}
-          </Typography>
-          <Typography variant='h5' component='div'>
-            {name}
           </Typography>
           <CardMedia
             component='img'
