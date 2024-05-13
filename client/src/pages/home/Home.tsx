@@ -42,11 +42,29 @@ const Home = () => {
   }, [data]);
 
   const handleChange = (id: string) => {
+    // Create a new object to hold updated expanded panel states
+    const updatedExpandedPanels = {};
+    // // update so all prev panels are closed
     setExpandedPanels((prev) => ({
       ...prev,
       // Toggles the panel's expansion state
       [id]: !prev[id],
     }));
+
+    // Mostly works but doesn't open all cards
+    // if (Object.keys(expandedPanels).length) {
+    //   console.log('expandedPanels1: ', expandedPanels);
+    //   // Iterate through all keys in the current expanded panels state
+    //   Object.keys(expandedPanels).forEach((panelId) => {
+    //     // Set the value to false for all panels except the newly expanded panel
+    //     updatedExpandedPanels[panelId] =
+    //       panelId === id ? !expandedPanels[id] : false;
+    //   });
+
+    //   // Update the state with the new expanded panel states
+    //   setExpandedPanels(updatedExpandedPanels);
+    // }
+    console.log('expandedPanels: ', expandedPanels);
   };
 
   const handleNewProject = (e: React.MouseEvent<HTMLButtonElement>) => {
