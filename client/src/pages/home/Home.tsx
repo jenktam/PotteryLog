@@ -41,31 +41,17 @@ const Home = () => {
     }
   }, [data]);
 
-  const handleChange = (id: string) => {
-    // Create a new object to hold updated expanded panel states
-    const updatedExpandedPanels = {};
-    // // update so all prev panels are closed
-    setExpandedPanels((prev) => ({
-      ...prev,
-      // Toggles the panel's expansion state
-      [id]: !prev[id],
-    }));
-
-    // Mostly works but doesn't open all cards
-    // if (Object.keys(expandedPanels).length) {
-    //   console.log('expandedPanels1: ', expandedPanels);
-    //   // Iterate through all keys in the current expanded panels state
-    //   Object.keys(expandedPanels).forEach((panelId) => {
-    //     // Set the value to false for all panels except the newly expanded panel
-    //     updatedExpandedPanels[panelId] =
-    //       panelId === id ? !expandedPanels[id] : false;
-    //   });
-
-    //   // Update the state with the new expanded panel states
-    //   setExpandedPanels(updatedExpandedPanels);
-    // }
-    console.log('expandedPanels: ', expandedPanels);
-  };
+  const handleChange = React.useCallback(
+    (id: string, expanded: boolean) => {
+      // update so all prev panels are closed
+      setExpandedPanels((prev) => ({
+        prev: false,
+        // Toggles the panel's expansion state
+        [id]: !prev[id],
+      }));
+    },
+    [setExpandedPanels]
+  );
 
   const handleNewProject = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -78,13 +64,13 @@ const Home = () => {
       orders
         .filter((order) => order.status === columnName)
         .map((order, index) => {
-          const strOrderId = `project-${order.id}`;
+          const orderId = order.id;
           return (
             <Accordion
-              key={strOrderId}
-              id={strOrderId}
-              onChange={() => handleChange(strOrderId)}
-              expanded={expandedPanels[strOrderId] || false}
+              key={orderId}
+              id={orderId}
+              onChange={() => handleChange(orderId, expandedPanels[orderId])}
+              expanded={expandedPanels[orderId] || false}
               title={order.name}
               content={<ProjectCard project={order} setOrders={setOrders} />}
             />
@@ -95,7 +81,6 @@ const Home = () => {
 
   return (
     <>
-      {/* Drag and Drop */}
       <Grid container spacing={2} style={{ margin: '24px 0' }}>
         {[THROWN, TRIMMED, BISQUED, GLAZED, COMPLETED, SOLD, GIFTED].map(
           (columnName) => (

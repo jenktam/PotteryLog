@@ -48,7 +48,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 }));
 
 interface CustomizedAccordionsProps {
-  id: string;
+  id: number;
   title: React.ReactNode;
   content: React.ReactNode;
   expanded: boolean;
@@ -64,7 +64,7 @@ export default function CustomizedAccordions({
 }: CustomizedAccordionsProps) {
   return (
     <div>
-      <Accordion id={id} expanded={expanded} onChange={onChange}>
+      <Accordion expanded={expanded} onChange={onChange}>
         <AccordionSummary aria-controls='panel1d-content' id='panel1d-header'>
           <Typography>{title}</Typography>
         </AccordionSummary>
