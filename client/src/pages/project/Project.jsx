@@ -47,14 +47,14 @@ const Project = () => {
         <Divider />
         <Typography variant='h3'>Details</Typography>
         <Typography variant='body1'>
-          Date Started: {data.dateStarted}
+          Date Started: {Date(data.dateStarted)}
         </Typography>
         <Typography variant='body1'>Weight (lbs): {data.clayBody}</Typography>
         <Typography variant='body1'>Size (in): {data.size}</Typography>
-        */}
         <Typography variant='body1'>
-          Glazes: should be collapsible array{data.glazing}
+          Glazes: should be collapsible array with tag chips{data.glazing}
         </Typography>
+        <Typography variant='body1'>Firing:{data.firing}</Typography>
         <Typography variant='body1'>
           Notes: Should be collapsible array {data.notes}
         </Typography>

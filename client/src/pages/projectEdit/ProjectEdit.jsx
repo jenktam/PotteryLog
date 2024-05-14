@@ -192,12 +192,9 @@ const ProjectEdit = () => {
 
                       <Grid item xs={12} sm={6} md={12}>
                         <FormControl fullWidth variant='outlined'>
-                          <InputLabel id='demo-simple-select-outlined-label'>
-                            Status
-                          </InputLabel>
+                          <InputLabel id='status-input'>Status</InputLabel>
                           <Select
-                            labelId='demo-simple-select-outlined-label'
-                            id='demo-simple-select-outlined'
+                            labelId='status-input'
                             label='Status'
                             onChange={handleChange}
                             onBlur={handleBlur}
@@ -216,12 +213,11 @@ const ProjectEdit = () => {
 
                       <Grid item xs={12} sm={6} md={12}>
                         <FormControl fullWidth variant='outlined'>
-                          <InputLabel id='demo-simple-select-outlined-label'>
+                          <InputLabel id='clay-type-input'>
                             Clay Type
                           </InputLabel>
                           <Select
-                            labelId='demo-simple-select-outlined-label'
-                            id='demo-simple-select-outlined'
+                            labelId='clay-type-input'
                             label='Clay Type'
                             onChange={handleChange}
                             onBlur={handleBlur}
@@ -276,12 +272,9 @@ const ProjectEdit = () => {
 
                       <Grid item xs={12} sm={6} md={12}>
                         <FormControl fullWidth variant='outlined'>
-                          <InputLabel id='demo-simple-select-outlined-label'>
-                            Location
-                          </InputLabel>
+                          <InputLabel id='location-input'>Location</InputLabel>
                           <Select
-                            labelId='demo-simple-select-outlined-label'
-                            id='demo-simple-select-outlined'
+                            labelId='location-input'
                             label='Location'
                             onChange={handleChange}
                             onBlur={handleBlur}
@@ -323,6 +316,8 @@ const ProjectEdit = () => {
 
                       <Grid item xs={12} sm={6} md={6}>
                         <Field
+                          as='textarea'
+                          placeholder='Any notes about the project.'
                           label='Notes'
                           variant='outlined'
                           fullWidth
