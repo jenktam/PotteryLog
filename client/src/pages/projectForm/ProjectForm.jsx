@@ -44,13 +44,12 @@ const ProjectForm = () => {
 
   const mutation = useMutation(
     (newProject) => {
-      // send form fields to server
+      // Send form fields to server
       return makeRequest.post('/projects', newProject);
     },
     {
-      // invalidate and refetch
-      // if successful, refetch projects because our query name is projects
-      // -->**search for useQuery(["projects"])
+      // Invalidate and refetch
+      // if successful, refetch projects by searching for useQuery(["projects"])
       onSuccess: () => {
         queryClient.invalidateQueries(['projects']);
       },
@@ -59,9 +58,8 @@ const ProjectForm = () => {
 
   const handleSubmit = async (values) => {
     let imgResponse;
-    // make api call and get async response back and name imgUrl
+    // Make api call and get async response back and name imgUrl
     if (files) imgResponse = await upload();
-    console.log('imgResponse: ', imgResponse);
 
     mutation.mutate({
       ...values,
@@ -70,7 +68,6 @@ const ProjectForm = () => {
     });
 
     setFiles(null);
-    // navigate("/");
   };
 
   return (

@@ -15,7 +15,6 @@ function Column({
   const [{ isOver }, dropRef] = useDrop({
     accept: cardType.ORDER,
     drop: (item, monitor) => {
-      // name = column name
       return {
         name,
       };

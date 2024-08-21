@@ -44,7 +44,6 @@
     "/coverage"
   ],
   "plugins": [
-    // ...
     "react-hooks"
   ]
 }

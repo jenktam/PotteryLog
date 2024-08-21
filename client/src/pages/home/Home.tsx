@@ -43,7 +43,7 @@ const Home = () => {
 
   const handleChange = React.useCallback(
     (id: string, expanded: boolean) => {
-      // update so all prev panels are closed
+      // Update so all prev panels are closed
       setExpandedPanels((prev) => ({
         prev: false,
         // Toggles the panel's expansion state
@@ -72,6 +72,7 @@ const Home = () => {
               onChange={() => handleChange(orderId, expandedPanels[orderId])}
               expanded={expandedPanels[orderId] || false}
               title={order.name}
+              setOrders={setOrders}
               content={<ProjectCard project={order} setOrders={setOrders} />}
             />
           );

@@ -22,7 +22,7 @@ const Login = () => {
   const { login } = useContext(AuthContext);
 
   const handleLogin = async (e) => {
-    // prevent page from restarting
+    // Prevent page from restarting
     e.preventDefault();
 
     try {

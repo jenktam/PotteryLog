@@ -4,13 +4,11 @@ import { getUploads } from '../controllers/upload.js';
 
 const router = express.Router();
 
-// can create router for multer file upload stuff
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, `../client/public/upload`); // upload file destination. must add
+    cb(null, `../client/public/upload`); // TODO: upload file destination. must add
   },
   filename: (req, file, cb) => {
-    // be careful with file keys. they're not camelCase
     const fieldName = Date.now() + file.originalname;
 
     cb(null, fieldName);
@@ -19,10 +17,10 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-// // upload one file
+// Upload one file
 router.post('/one', upload.single('file'), getUploads);
 
-// upload multiple files
+// Upload multiple files
 router.post('/', upload.array('files'), getUploads, (error, req, res) => {
   res.status(400).send({ error: error.message });
 });

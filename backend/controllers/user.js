@@ -6,7 +6,7 @@ export const getUser = (req, res) => {
   if (!token) return res.status(401).json('Not logged in!');
 
   jwt.verify(token, 'secretKey', (err) => {
-    // forbidden error
+    // Forbidden Error
     if (err) return res.status(403).json('Token is not valid!');
 
     const q = `SELECT * FROM users WHERE id = ?`;
@@ -14,8 +14,7 @@ export const getUser = (req, res) => {
     db.query(q, [req.params.userId], (err, data) => {
       if (err) return res.status(500).json(err);
 
-      // don't pass in password
-      // eslint-disable-next-line
+      // Don't pass in password
       const { password, ...info } = data[0];
       return res.status(200).json(info);
     });
@@ -24,10 +23,8 @@ export const getUser = (req, res) => {
 
 export const updateUser = (req, res) => {
   const token = req.cookies.accessToken;
-
   if (!token) return res.status(401).json('Not logged in');
 
-  // verify correct user
   jwt.verify(token, 'secretKey', (err, userInfo) => {
     if (err) return res.status(403).json('Token is not valid!');
 

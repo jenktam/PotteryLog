@@ -1,4 +1,3 @@
-// context provider - handles state that's used throughout app
 import axios from 'axios';
 import { createContext, useEffect, useState } from 'react';
 import { makeRequest } from '../axios';
@@ -10,7 +9,7 @@ export const AuthContextProvider = ({ children }) => {
     JSON.parse(localStorage.getItem('user')) || null
   );
 
-  // makes /post login call and sets currendUser within AuthContext
+  // Makes /post login call and sets currendUser within AuthContext
   const login = async (inputs) => {
     const res = await makeRequest.post('/auth/login', inputs);
 

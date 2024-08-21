@@ -109,7 +109,6 @@ const ProjectEdit = () => {
                 handleBlur,
                 handleSubmit,
                 isSubmitting,
-                /* and other goodies */
               }) => (
                 <Form onSubmit={handleSubmit} sx={{ m: 1, minWidth: 400 }}>
                   <CardContent>
@@ -152,7 +151,6 @@ const ProjectEdit = () => {
                               style={{
                                 display: 'none',
                               }}
-                              // only allow to upload 1 single file
                               onChange={(e) => setFiles(e.target.files)}
                             />
                             <label htmlFor='file'>

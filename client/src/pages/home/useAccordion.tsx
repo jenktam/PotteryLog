@@ -6,13 +6,10 @@ export const useAccordion = (initialPanel: string | false = '') => {
   const handleChange =
     (panel: string, prevPanel, setPrevPanel: Function) =>
     (event: React.SyntheticEvent, newExpanded: boolean) => {
-      // track previous panel
+      // Track previous panel
       if (prevPanel !== panel) {
-        console.log('panel: ', panel);
-        console.log('prevPanel: ', prevPanel);
         setExpanded(false);
         setPrevPanel(panel);
-        console.log('panel changed');
       }
 
       setExpanded(newExpanded ? panel : false);

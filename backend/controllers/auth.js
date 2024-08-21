@@ -72,8 +72,8 @@ async function sendEmail({ to, subject, html, from = process.env.EMAIL_FROM }) {
     host: 'smtp.ethereal.email',
     port: 587,
     auth: {
-      user: process.env.ETHEREAL_USER, // generated ethereal user
-      pass: process.env.ETHEREAL_PASS, // generated ethereal password
+      user: process.env.ETHEREAL_USER,
+      pass: process.env.ETHEREAL_PASS,
     },
   });
 
@@ -167,11 +167,10 @@ export const forgotPassword = async (req, res) => {
     const email = req.body.email;
     console.log(email);
 
-    const origin = req.header('Origin'); // we are  getting the request origin from  the HOST header
+    const origin = req.header('Origin'); // Request origin from the HOST header
     const user = await getUserByEmail(email);
 
     if (!user) {
-      // here we always return ok response to prevent email enumeration
       return res
         .status(404)
         .json('User not found. Try a different email address.');
@@ -180,7 +179,7 @@ export const forgotPassword = async (req, res) => {
     // Get all the tokens that were previously set for this user and set used to 1. This will prevent old and expired tokens from being used.
     await expireOldTokens(email, 1);
 
-    // create reset token that expires after 1 hours
+    // Create reset token that expires after 1 hour
     const resetToken = crypto.randomBytes(40).toString('hex');
     const resetTokenExpires = new Date(Date.now() + 60 * 60 * 1000);
     const createdAt = new Date(Date.now());
@@ -189,7 +188,7 @@ export const forgotPassword = async (req, res) => {
 
     await insertResetToken(email, resetToken, createdAt, expiredAt, 0, userId);
 
-    // send email
+    // Send email for password reset
     await sendPasswordResetEmail(email, resetToken, origin);
     res.status(200).json({
       message:
@@ -205,26 +204,24 @@ export const login = (req, res) => {
 
   db.query(q, [req.body.username], (err, data) => {
     if (err) return res.status(500).json(err);
-    // if 0, means don't have a user
-    if (data.length === 0)
+    if (!data.length)
       return res.status(404).json('User not found. Please try again.');
 
-    // IF USER IN DB, CHECK PASSWORD IS CORRECT
+    //  If user exists, check password
     const checkPassword = bcrypt.compareSync(
       req.body.password,
       data[0].password
     );
 
-    // if no password, wrong inputs
+    // If no password, wrong inputs
     if (!checkPassword)
       return res.status(400).json('Wrong password or username!');
 
     const token = jwt.sign({ id: data[0].id }, 'secretKey');
 
-    // eslint-disable-next-line
     const { password, ...others } = data[0];
 
-    // set accessToken cookie for user
+    // Set accessToken cookie for user
     res
       .cookie('accessToken', token, {
         httpOnly: true,
@@ -234,7 +231,6 @@ export const login = (req, res) => {
   });
 };
 export const logout = (req, res) => {
-  // don't need to pass in username when make API request bc already have cookie
   res
     .clearCookie('accessToken', () => ({
       secure: true,

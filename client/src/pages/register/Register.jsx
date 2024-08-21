@@ -111,7 +111,6 @@ const ProjectForm = () => {
                             />
                           )}
                         </Box>
-                        {/* will create a fake url to upload project */}
                         <Box sx={{ mb: 2 }}>
                           <Fab variant='extended' color='primary'>
                             <input
@@ -120,7 +119,7 @@ const ProjectForm = () => {
                               style={{
                                 display: 'none',
                               }}
-                              // only allow to upload 1 single file
+                              // TODO: maybe change? Only allow to upload 1 single file currently,
                               onChange={(e) => setFile(e.target.files[0])}
                             />
                             <label htmlFor='file'>

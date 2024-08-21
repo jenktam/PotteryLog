@@ -6,12 +6,6 @@ const ForgotPasswordModal = ({ open, setOpen }) => {
   const queryClient = useQueryClient();
   const [email, setEmail] = useState('');
 
-  // const { isLoading, error, data } = useQuery(['passwords'], () => makeRequest.post('/auth/forgot-password', {
-  //   email: email,
-  // }, {
-  //   onSuccess: () => queryClient.invalidateQueries(["passwords"])
-  // }));
-
   const mutation = useMutation(
     (email) => {
       return makeRequest.post('/auth/forgot-password', email);
@@ -24,7 +18,6 @@ const ForgotPasswordModal = ({ open, setOpen }) => {
   );
 
   const onClose = (e) => {
-    // onClose && props.onClose(e);
     setOpen(false);
   };
 
@@ -32,10 +25,7 @@ const ForgotPasswordModal = ({ open, setOpen }) => {
     e.preventDefault();
     mutation.mutate({ email });
 
-    // need to build page
-    // this is working but setting up url path to http://localhost:3000/api/auth/reset-password?token=d671ddce078aa392ef5ed2b509e00edaf93b97506f9aac472cd36d338f9c7bdb3096ef6c4b5fadd8&email=test@gmail.com
-
-    setEmail(''); // reset email after email sent so doesn't show up in UI afterward
+    setEmail(''); // Reset email after email sent so doesn't show up in UI afterward
   };
 
   const handleChange = (e) => {

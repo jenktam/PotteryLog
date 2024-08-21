@@ -49,7 +49,7 @@ export const getProject = (req, res) => {
       if (err) return res.status(500).json(err);
 
       if (!data.length) return res.status(404).json('Project not found');
-      // once get project data from database, get images for project
+      // Once get project data from database, get images for project
       const imagesQuery = `SELECT *
                             FROM images
                             WHERE projectId = ?
@@ -134,7 +134,7 @@ export const addProject = (req, res) => {
           .json('Please fill out the form to add a new project.');
       let projectId = data.insertId;
 
-      // TODO: improve with async and promises
+      // TODO:  async and promises
       if (projectId) {
         let uploadAt = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
 
@@ -164,7 +164,7 @@ export const addProject = (req, res) => {
   });
 };
 
-// PUT api/projects/:id
+// PUT /api/projects/:id
 export const updateProject = (req, res) => {
   const token = req.cookies.accessToken;
   if (!token) {

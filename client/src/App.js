@@ -1,10 +1,7 @@
-// import logo from './logo.svg';
 import './App.css';
 import Login from './pages/login/Login';
 import Register from './pages/register/Register';
 import {
-  createBrowserRouter,
-  RouterProvider,
   Outlet,
   Navigate,
   BrowserRouter,
@@ -38,21 +35,6 @@ import routerBindings, {
   UnsavedChangesNotifier,
 } from '@refinedev/react-router-v6';
 import dataProvider from '@refinedev/simple-rest';
-// import { Header } from "./components/header";
-// import { ColorModeContextProvider } from "./contexts/color-mode";
-// import {
-//   BlogPostCreate,
-//   BlogPostEdit,
-//   BlogPostList,
-//   BlogPostShow,
-// } from "./pages/blog-posts";
-// import {
-//   CategoryCreate,
-//   CategoryEdit,
-//   CategoryList,
-//   CategoryShow,
-// } from "./pages/categories";
-// import DashBoardPage from "./pages/dashboardPage";
 
 function App() {
   const { currentUser } = useContext(AuthContext);
@@ -82,37 +64,34 @@ function App() {
   return (
     <div>
       <QueryClientProvider client={queryClient}>
-        {/* <RouterProvider router={router} /> */}
         <BrowserRouter>
           <RefineKbarProvider>
-            {/* <ColorModeContextProvider> */}
             <DndProvider backend={HTML5Backend}>
-              {/* TODO: remove refine */}
               <Refine
                 dataProvider={dataProvider('https://api.fake-rest.refine.dev')}
                 notificationProvider={useNotificationProvider}
                 routerProvider={routerBindings}
                 resources={[
                   {
-                    name: 'dashboard',
+                    name: 'Pottery Board',
                     list: '/',
                   },
                   {
-                    name: 'blog_posts',
-                    list: '/blog-posts',
-                    create: '/blog-posts/create',
-                    edit: '/blog-posts/edit/:id',
-                    show: '/blog-posts/show/:id',
+                    name: 'All Boards',
+                    list: '/boards',
+                    create: '/boards/create',
+                    edit: '/boards/edit/:id',
+                    show: '/boards/show/:id',
                     meta: {
                       canDelete: true,
                     },
                   },
                   {
-                    name: 'categories',
-                    list: '/categories',
-                    create: '/categories/create',
-                    edit: '/categories/edit/:id',
-                    show: '/categories/show/:id',
+                    name: 'Settings',
+                    list: '/Settings',
+                    create: '/Settings/create',
+                    edit: '/Settings/edit/:id',
+                    show: '/Settings/show/:id',
                     meta: {
                       canDelete: true,
                     },
@@ -123,14 +102,10 @@ function App() {
                   warnWhenUnsavedChanges: true,
                 }}
               >
-                {/* TOOD: move routes to here */}
                 <Routes>
                   <Route
                     element={
-                      <ThemedLayoutV2
-                      // Header={() => <Header sticky />}
-                      // Sider={(props) => <ThemedSiderV2 {...props} fixed />}
-                      >
+                      <ThemedLayoutV2>
                         <ProtectedRoute>
                           <Layout />
                         </ProtectedRoute>
@@ -156,7 +131,6 @@ function App() {
                 <DocumentTitleHandler />
               </Refine>
             </DndProvider>
-            {/* </ColorModeContextProvider> */}
           </RefineKbarProvider>
         </BrowserRouter>
       </QueryClientProvider>

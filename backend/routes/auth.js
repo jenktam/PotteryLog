@@ -10,8 +10,8 @@ import {
 
 const router = express.Router();
 
-// AUTH MIDDLEWARES
-// get email and token. Then, verify that the token is valid for the user.
+// ****** Auth Middleware *********
+// Get email and token. Then, verify that the token is valid for the user.
 const validateResetToken = async (req, res, next) => {
   const email = req.body.email || req.params.email;
   const resetToken = req.body.token || req.params.token;
@@ -24,7 +24,7 @@ const validateResetToken = async (req, res, next) => {
       );
   }
 
-  // verify that resetToken exists in the resetPasswordToken table
+  // Verify that resetToken exists in the resetPasswordToken table
   const currentTime = new Date(Date.now());
 
   const token = await findValidToken(resetToken, email, currentTime);
@@ -33,7 +33,7 @@ const validateResetToken = async (req, res, next) => {
     return res.status(404).json('Invalid token. Please try again!');
   }
 
-  // if token is valid, execute next middleware in stack, which is resestPassword
+  // If token is valid, execute next middleware in stack, which is resestPassword
   next();
 };
 
@@ -53,7 +53,7 @@ const findValidToken = (token, email, currentTime) => {
   });
 };
 
-// AUTH ROUTES
+// ****** Auth Routes *********
 router.post('/login', login);
 router.post('/register', register);
 router.post('/forgot-password', forgotPassword);

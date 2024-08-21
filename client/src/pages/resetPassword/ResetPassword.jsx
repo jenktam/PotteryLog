@@ -44,7 +44,7 @@ const ResetPassword = () => {
   return (
     <>
       <div>Reset Password page!</div>
-      {/* dont need below if already passed correct token in query params */}
+      {/* Dont need below if already passed correct token in query params */}
       {/* <input placeholder="Enter Code" value={code} /> */}
       <input
         type='password'
