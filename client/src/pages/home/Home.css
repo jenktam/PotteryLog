@@ -1,0 +1,38 @@
+/* TODO: look into making main content scrollable */
+/* .board-canvas {
+  flex-grow: 1;
+  margin-top: 12px;
+  position: relative;
+  width: max-content;
+} */
+
+/*
+.board {
+  margin: 24px 0;
+  bottom: 0;
+  left: 0;
+  margin-bottom: 8px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 8px;
+  padding-top: 2px;
+  position: absolute;
+  right: 0;
+  scrollbar-color: #fff6 #00000026;
+  scrollbar-width: auto;
+  top: -2px;
+  -webkit-user-select: none;
+  user-select: none;
+  white-space: nowrap;
+} */
+
+/* Styling for each columnm */
+
+.kanban-board {
+  display: flex;
+  flex-direction: row;
+}
+
+.box {
+  min-width: 300px;
+}

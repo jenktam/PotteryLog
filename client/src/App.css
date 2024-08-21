@@ -36,3 +36,16 @@
     transform: rotate(360deg);
   }
 }
+
+div:has(.theme-light),
+div:has(.theme-dark) {
+  padding: 0 !important; /* Need to use this to override parent component within antd refine component ThemedLayoutV2 */
+}
+
+div:has(.theme-dark) {
+  background-color: #282c34;
+}
+
+.ant-layout-content {
+  width: auto;
+}
