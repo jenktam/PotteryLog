@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import uploadRoutes from './routes/uploads.js';
 import userRoutes from './routes/users.js';
 import authRoutes from './routes/auth.js';
-import postRoutes from './routes/posts.js';
+// import postRoutes from './routes/posts.js';
 import projectRoutes from './routes/projects.js';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
@@ -33,7 +33,7 @@ app.use(cookieParser());
 app.use('/api/upload', uploadRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
-app.use('/api/posts', postRoutes);
+// app.use('/api/posts', postRoutes);
 app.use('/api/projects', projectRoutes);
 
 app.listen(DB_PORT, () => {
