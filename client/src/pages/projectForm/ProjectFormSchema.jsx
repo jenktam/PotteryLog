@@ -1,8 +1,8 @@
 import * as yup from 'yup';
 
-const requiredMessage = field => `${field} is required`;
-const minMessage = min => `Must have at least ${min} characters`;
-const maxMessage = max => `Cannot have more than ${max} characters`;
+const requiredMessage = (field) => `${field} is required`;
+const minMessage = (min) => `Must have at least ${min} characters`;
+const maxMessage = (max) => `Cannot have more than ${max} characters`;
 
 export const ProjectSchema = yup.object().shape({
   name: yup
@@ -12,7 +12,14 @@ export const ProjectSchema = yup.object().shape({
     .required(requiredMessage('Name')),
   status: yup
     .mixed()
-    .oneOf(['Thrown', 'Trimmed', 'Bisqued', 'Glazed', 'Completed', 'Sold/Gifted'])
+    .oneOf([
+      'Thrown',
+      'Trimmed',
+      'Bisqued',
+      'Glazed',
+      'Completed',
+      'Sold/Gifted',
+    ])
     .required(requiredMessage('Status')),
   clayType: yup
     .mixed()
@@ -28,44 +35,34 @@ export const ProjectSchema = yup.object().shape({
     .min(1, minMessage(1))
     .max(100, maxMessage(100))
     .required(requiredMessage('Size')),
-  handbuilt: yup
-    .bool(),
+  handbuilt: yup.bool(),
   location: yup
     .mixed()
     .oneOf(['Home', 'Studio'])
     .required(requiredMessage('Location')),
-  firing: yup
-    .string()
-    .min(1, minMessage(1))
-    .max(45, maxMessage(45)),
-  glazing: yup
-    .string()
-    .min(1, minMessage(1))
-    .max(45, maxMessage(45)),
-  notes: yup
-    .string()
-    .min(1, minMessage(1))
-    .max(500, maxMessage(500)),
+  firing: yup.string().min(1, minMessage(1)).max(45, maxMessage(45)),
+  glazing: yup.string().min(1, minMessage(1)).max(45, maxMessage(45)),
+  notes: yup.string().min(1, minMessage(1)).max(500, maxMessage(500)),
 });
 
 export const options = {
   status: [
-    { label: "Thrown", value: "Thrown" },
-    { label: "Trimmed", value: "Trimmed" },
-    { label: "Bisqued", value: "Bisqued" },
-    { label: "Glazed", value: "Glazed" },
-    { label: "Completed", value: "Completed" },
-    { label: "Sold / Gifted", value: "Sold/Gifted" },
+    { label: 'Thrown', value: 'Thrown' },
+    { label: 'Trimmed', value: 'Trimmed' },
+    { label: 'Bisqued', value: 'Bisqued' },
+    { label: 'Glazed', value: 'Glazed' },
+    { label: 'Completed', value: 'Completed' },
+    { label: 'Sold / Gifted', value: 'Sold/Gifted' },
   ],
   clayType: [
-    { label: "Red", value: "red" },
-    { label: "White", value: "white" },
-    { label: "Klamath Yellow", value: "klamathYellow" },
-    { label: "Porcelain", value: "porcelain" },
-    { label: "Other", value: "other" },
+    { label: 'Red', value: 'red' },
+    { label: 'White', value: 'white' },
+    { label: 'Klamath Yellow', value: 'klamathYellow' },
+    { label: 'Porcelain', value: 'porcelain' },
+    { label: 'Other', value: 'other' },
   ],
   location: [
-    { label: "Home", value: "Home" },
-    { label: "Studio", value: "Studio" },
+    { label: 'Home', value: 'Home' },
+    { label: 'Studio', value: 'Studio' },
   ],
 };
