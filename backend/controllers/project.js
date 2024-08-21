@@ -217,7 +217,7 @@ export const updateProject = (req, res) => {
     db.query(q, [...values, req.params.id], (err, data) => {
       if (err) return res.status(500).json(err);
 
-      // handle hitting project that is not in db
+      // Handle hitting project that is not in db
       if (data.affectedRows === 0)
         return res
           .status(404)
