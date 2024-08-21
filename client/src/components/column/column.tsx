@@ -1,7 +1,8 @@
 import React from 'react';
 import { Typography } from '@mui/material';
 import { useDrop } from 'react-dnd';
-import { cardType } from './constants/enums';
+import { cardType } from '../constants/enums';
+import './column.css';
 
 function Column({
   children,
@@ -12,6 +13,7 @@ function Column({
   name: string;
   setOrders: Function;
 }) {
+  // Creates border around column when dragging card
   const [{ isOver }, dropRef] = useDrop({
     accept: cardType.ORDER,
     drop: (item, monitor) => {
@@ -29,24 +31,12 @@ function Column({
 
   return (
     <>
-      <Typography
-        style={{
-          fontSize: '17px',
-          marginLeft: '10px',
-          marginBottom: '15px',
-          color: '#84878c',
-        }}
-      >
+      <Typography variant='h6' className='column-title'>
         {name}
       </Typography>
       <Typography
         ref={dropRef}
-        style={{
-          width: '100%',
-          height: '100%',
-          padding: '4px',
-          border: isOver ? 'dashed 1px black' : '',
-        }}
+        className={`card-container' ${isOver ? 'card-container-over' : ''}`}
       >
         {children}
       </Typography>

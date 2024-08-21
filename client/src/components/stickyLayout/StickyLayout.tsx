@@ -9,7 +9,7 @@ const StickyLayout = () => {
 
   return (
     <div className={`theme-${darkMode ? 'dark' : 'light'}`}>
-      <Grid container direction='column' style={{ flexDirection: 'unset' }}>
+      <Grid container direction='column' style={{ display: 'block' }}>
         {/* Sticky Header */}
         <Grid
           item

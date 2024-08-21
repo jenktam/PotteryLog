@@ -3,7 +3,6 @@ import Login from './pages/login/Login';
 import Register from './pages/register/Register';
 import { Navigate, BrowserRouter, Route, Routes } from 'react-router-dom';
 import StickyLayout from './components/stickyLayout/StickyLayout.tsx';
-// import Navbar from './components/navbar/Navbar';
 import Home from './pages/home/Home.tsx';
 import Profile from './pages/profile/Profile';
 import ResetPassword from './pages/resetPassword/ResetPassword';
@@ -17,6 +16,11 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Refine } from '@refinedev/core';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import SettingsIcon from '@mui/icons-material/Settings';
+import BackupTableIcon from '@mui/icons-material/BackupTable';
+import CalendarViewMonthIcon from '@mui/icons-material/CalendarViewMonth';
+import logo from '../src/assets/vase.svg';
 import {
   ErrorComponent,
   useNotificationProvider,
@@ -39,7 +43,12 @@ function App() {
   };
 
   const SideNavTitle = () => {
-    return <h1>Pottery Log</h1>;
+    return (
+      <span className='side-nav-title'>
+        <img src={logo} alt='logo' />
+        <h5>Pottery Log</h5>
+      </span>
+    );
   };
 
   return (
@@ -55,6 +64,7 @@ function App() {
                 {
                   name: 'Kanban Board',
                   list: '/',
+                  icon: <DashboardIcon />,
                 },
                 {
                   name: 'All Projects',
@@ -65,6 +75,7 @@ function App() {
                   meta: {
                     canDelete: true,
                   },
+                  icon: <CalendarViewMonthIcon />,
                 },
                 {
                   name: 'All Boards',
@@ -75,6 +86,7 @@ function App() {
                   meta: {
                     canDelete: true,
                   },
+                  icon: <BackupTableIcon />,
                 },
                 {
                   name: 'Settings',
@@ -85,6 +97,7 @@ function App() {
                   meta: {
                     canDelete: true,
                   },
+                  icon: <SettingsIcon />,
                 },
               ]}
               options={{

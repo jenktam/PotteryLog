@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './Home.css';
 import { Box } from '@mui/material';
-import Column from 'src/components/column';
+import Column from 'src/components/column/column';
 import ProjectCard from 'src/components/projectCard/ProjectCard';
 import { useQuery } from '@tanstack/react-query';
 import { makeRequest } from '../../axios';

@@ -28,11 +28,18 @@ const ProjectEdit = () => {
   const queryClient = useQueryClient();
   let { id } = useParams();
   const navigate = useNavigate();
+  const [error, setError] = useState(null);
   const [files, setFiles] = useState(null);
 
-  const { isLoading, error, data } = useQuery(['projects', id], () =>
+  const { isLoading, projectsError, data } = useQuery(['projects', id], () =>
     makeRequest.get(`/projects/${id}`).then((res) => res.data)
   );
+
+  React.useEffect(() => {
+    if (projectsError) {
+      setError(projectsError);
+    }
+  }, []);
 
   const upload = async () => {
     try {
@@ -58,10 +65,14 @@ const ProjectEdit = () => {
       onSuccess: () => {
         queryClient.invalidateQueries(['projects']);
       },
+      onError: (error) => {
+        setError(error);
+      },
     }
   );
 
   const handleSubmit = (values) => {
+    setError(null);
     mutation.mutate(values);
 
     navigate(`/projects/${data.id}`);
@@ -328,7 +339,12 @@ const ProjectEdit = () => {
                   </CardContent>
 
                   <CardActions>
-                    <Button variant='contained' color='primary' type='Submit'>
+                    <Button
+                      variant='contained'
+                      color='primary'
+                      type='Submit'
+                      disabled={!isValid && dirty}
+                    >
                       Submit
                     </Button>
                   </CardActions>

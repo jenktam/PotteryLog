@@ -1,0 +1,19 @@
+.column-title {
+  padding: 10px;
+  color: rgb(208 92 61);
+}
+
+.column-title {
+  padding: 10px;
+  color: rgb(208, 92, 61);
+}
+
+.card-container {
+  width: 100%;
+  height: 100%;
+  padding: 4px;
+}
+
+.card-container-over {
+  border: dashed 2px black;
+}

@@ -8,7 +8,7 @@ export const ProjectSchema = yup.object().shape({
   name: yup
     .string()
     .min(3, minMessage(3))
-    .max(255, maxMessage(255))
+    .max(45, maxMessage(45))
     .required(requiredMessage('Name')),
   status: yup
     .mixed()
@@ -33,7 +33,7 @@ export const ProjectSchema = yup.object().shape({
   size: yup
     .string()
     .min(1, minMessage(1))
-    .max(100, maxMessage(100))
+    .max(45, maxMessage(45))
     .required(requiredMessage('Size')),
   handbuilt: yup.bool(),
   location: yup
